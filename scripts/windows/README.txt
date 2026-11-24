@@ -40,6 +40,8 @@ Shadowsocks) для Firefox: через VPN идёт только трафик �
   %LOCALAPPDATA%\XUI-Browser\logs       журнал xray
   Реестр: HKCU\Software\Mozilla\NativeMessagingHosts\xui_browser
 
+Исходный код: https://github.com/BorisGB2001/xui-browser-firefox
+
 Удаление
   uninstall.cmd — удаляет помощник, серверы остаются.
   Полностью: powershell -ExecutionPolicy Bypass -File uninstall.ps1 -Purge

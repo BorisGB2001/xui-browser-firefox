@@ -34,4 +34,4 @@ No other requests are made by the add-on or the helper.
 
 ## Contact
 
-Questions and issues: the project page linked from the add-on's listing.
+Questions and issues: https://github.com/BorisGB2001/xui-browser-firefox/issues

@@ -2,10 +2,7 @@
 
 Copy these texts into the Developer Hub form (addons.mozilla.org → Developer Hub → the add-on → Edit Product Page; descriptions are Markdown). The default locale is English (en-US); the Russian texts go in as a translation (“Manage Translations” → Русский).
 
-Before submitting to the public listing:
-
-1. The source must be public — reviewers need the code of the helper (`native-host/`). Create the GitHub repository, then put its address into `homepage_url` of `extension/manifest.json` and into the fields marked **(repository)** below.
-2. Versions 0.1.0 and 0.1.1 are taken (signed unlisted). The first listed version is **0.1.2**: `scripts/sign.sh listed`, or upload `dist/xui-browser-0.1.2.xpi` on the site (Upload New Version → “On this site”).
+Before submitting to the public listing: Versions 0.1.0 and 0.1.1 are taken (signed unlisted). The first listed version is **0.1.2**: `scripts/sign.sh listed`, or upload `dist/xui-browser-0.1.2.xpi` on the site (Upload New Version → “On this site”).
 
 ## Basic info
 
@@ -16,8 +13,8 @@ Before submitting to the public listing:
 | Add-on URL slug | `xui-browser-client` |
 | Categories | **Privacy & Security** |
 | License | MIT |
-| Homepage | **(repository)** |
-| Support site | **(repository)**`/issues` |
+| Homepage | https://github.com/BorisGB2001/xui-browser-firefox |
+| Support site | https://github.com/BorisGB2001/xui-browser-firefox/issues |
 | Support email | (optional — leave empty or use a public address) |
 | Privacy policy | paste `PRIVACY.md` |
 | Experimental | no |
@@ -55,11 +52,11 @@ XUI Browser Client connects Firefox to your own server managed by a 3x-ui panel 
 - Connection check with latency and traffic counters; the Xray log is one click away
 - English and Russian interface
 
-**The helper** is needed only for the full mode. Download it from the project page, run the installer and restart Firefox. Server links with keys are kept in the helper's folder on your computer, not in the Firefox profile.
+**The helper** is needed only for the full mode. Download it from the project page (https://github.com/BorisGB2001/xui-browser-firefox/releases), run the installer and restart Firefox. Server links with keys are kept in the helper's folder on your computer, not in the Firefox profile.
 
 **Privacy**: no data collection. Your credentials are sent only to your own server.
 
-Open source (MIT): **(repository)**
+Open source (MIT): https://github.com/BorisGB2001/xui-browser-firefox
 This is an unofficial project, not affiliated with 3x-ui or Project X.
 
 ## Description (ru)
@@ -86,11 +83,11 @@ XUI — клиент для браузера подключает Firefox к в�
 - Проверка связи с задержкой и счётчиками трафика; журнал Xray открывается одной кнопкой
 - Интерфейс на английском и русском
 
-**Помощник** нужен только для полного режима. Скачайте его со страницы проекта, запустите установщик и перезапустите Firefox. Ссылки серверов с ключами хранятся в папке помощника на вашем компьютере, а не в профиле Firefox.
+**Помощник** нужен только для полного режима. Скачайте его со страницы проекта (https://github.com/BorisGB2001/xui-browser-firefox/releases), запустите установщик и перезапустите Firefox. Ссылки серверов с ключами хранятся в папке помощника на вашем компьютере, а не в профиле Firefox.
 
 **Конфиденциальность**: данные не собираются. Учётные данные отправляются только на ваш сервер.
 
-Открытый код (MIT): **(repository)**
+Открытый код (MIT): https://github.com/BorisGB2001/xui-browser-firefox
 Неофициальный проект, не связан с 3x-ui и Project X.
 
 ## Release notes 0.1.2 (en-US)
@@ -129,7 +126,7 @@ No remote code, no minified or bundled code, no analytics. Network requests made
 
 Testing without a server: `node scripts/test-extension.js` (background script with a mocked browser and helper), `node scripts/test-scope.js`, `node scripts/test-geo.js`, and `go test ./...` in `native-host/` (link parsing, subscriptions, tunnel lifecycle with a fake xray). To test for real: the light mode needs any HTTPS proxy with Basic auth and a trusted certificate; the full mode needs the helper and a vless:// (etc.) link of an Xray server.
 
-Source: **(repository)**
+Source: https://github.com/BorisGB2001/xui-browser-firefox
 
 ## Images
 

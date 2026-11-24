@@ -4,6 +4,7 @@
   "version": "0.1.2",
   "description": "__MSG_extDescription__",
   "default_locale": "en",
+  "homepage_url": "https://github.com/BorisGB2001/xui-browser-firefox",
   "icons": {
     "48": "icons/icon-on.svg",
     "96": "icons/icon-on.svg"
