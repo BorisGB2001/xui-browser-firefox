@@ -43,7 +43,7 @@ button:hover { border-color: var(--accent); }
 button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
 button.danger { color: var(--err); }
 button:disabled { opacity: .5; cursor: default; }
-select, input[type=text], input[type=number], textarea {
+select, input[type=text], input[type=number], input[type=password], input[type=url], input[type=search], textarea {
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 8px;

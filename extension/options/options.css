@@ -59,3 +59,4 @@ label.inline select { width: auto; }
 
 .log { max-height: 320px; overflow: auto; background: var(--bg-soft); border-radius: var(--radius); padding: 10px; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 #subsBox { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+#httpsBox { margin-top: 8px; }
