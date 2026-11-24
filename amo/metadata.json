@@ -1,0 +1,18 @@
+{
+  "version": {
+    "license": "MIT",
+    "release_notes": {
+      "en-US": "First public release. Servers of a 3x-ui panel: VLESS, VMess, Trojan and Shadowsocks links and subscriptions through a local helper with xray-core, or an HTTPS proxy with no helper at all. Split tunneling by sites, tabs, containers, private windows and countries; kill switch; WebRTC protection; Check IP. English and Russian interface. Requires Firefox 140 or newer.",
+      "ru": "Первый публичный выпуск. Серверы панели 3x-ui: ссылки и подписки VLESS, VMess, Trojan и Shadowsocks через локальный помощник с xray-core либо HTTPS-прокси вообще без помощника. Раздельное туннелирование по сайтам, вкладкам, контейнерам, приватным окнам и странам; kill switch; защита WebRTC; проверка IP. Интерфейс на английском и русском. Нужен Firefox 140 или новее."
+    }
+  },
+  "categories": {
+    "firefox": [
+      "privacy-security"
+    ]
+  },
+  "summary": {
+    "en-US": "Browser-only VPN client for your own 3x-ui / Xray server: VLESS, VMess, Trojan, Shadowsocks via a small helper, or a plain HTTPS proxy with no helper. Route by sites, tabs, containers, private windows or countries. Unofficial, open source.",
+    "ru": "VPN-клиент только для браузера для вашего сервера 3x-ui / Xray: VLESS, VMess, Trojan, Shadowsocks через небольшой помощник или обычный HTTPS-прокси без него. Маршруты по сайтам, вкладкам, контейнерам, приватным окнам и странам. Открытый код."
+  }
+}

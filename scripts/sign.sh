@@ -24,5 +24,8 @@ if [ -z "$WEB_EXT_API_KEY" ] || [ -z "$WEB_EXT_API_SECRET" ]; then
 fi
 export WEB_EXT_API_KEY WEB_EXT_API_SECRET
 
-npx --yes web-ext@8 sign --source-dir extension --artifacts-dir web-ext-artifacts --channel "$CHANNEL" "$@"
+# A listed version needs a license (and, for the first one, categories and a summary): amo/metadata.json.
+META=()
+[ "$CHANNEL" = listed ] && [ -f amo/metadata.json ] && META=(--amo-metadata amo/metadata.json)
+npx --yes web-ext@8 sign --source-dir extension --artifacts-dir web-ext-artifacts --channel "$CHANNEL" "${META[@]}" "$@"
 [ "$CHANNEL" = unlisted ] && ls -1 web-ext-artifacts/*.xpi || echo "Submitted to the public listing: AMO will email you after review."
