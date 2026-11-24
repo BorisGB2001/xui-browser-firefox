@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XUI Browser Client</title>
+  <link rel="stylesheet" href="../lib/common.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main>
+  <header class="row">
+    <img src="../icons/icon-on.svg" width="32" height="32" alt="">
+    <div class="grow">
+      <h1><span data-i18n="extName"></span> <span class="version" id="version"></span></h1>
+      <div class="muted small" data-i18n="optIntro"></div>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2 data-i18n="optHelper"></h2>
+    <div class="row">
+      <div class="grow" id="hostInfo">…</div>
+      <button type="button" id="pingBtn" data-i18n="optHelperCheck"></button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optServers"></h2>
+    <div id="profiles" class="profiles"></div>
+    <div id="subsBox" hidden>
+      <div><b data-i18n="optSubs"></b></div>
+      <div id="subs" class="profiles"></div>
+    </div>
+
+    <details id="editBox">
+      <summary data-i18n="optAddServer"></summary>
+      <div class="import">
+        <label><span data-i18n="optKeyLabel"></span>
+          <textarea id="impText" rows="6" spellcheck="false" data-i18n-placeholder="optKeyPlaceholder"></textarea>
+        </label>
+        <label><span data-i18n="fName"></span> <input type="text" id="fName" data-i18n-placeholder="fNamePlaceholder"></label>
+        <div class="muted small" data-i18n="optNameHint"></div>
+        <div class="row">
+          <label class="file-btn"><input type="file" id="impFile" accept=".txt,text/plain" hidden><span data-i18n="optChooseFile"></span></label>
+          <span class="grow muted small" data-i18n="optStorageHint"></span>
+          <button type="button" class="primary" id="importBtn" data-i18n="optImport"></button>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optScope"></h2>
+    <div class="modes">
+      <label class="radio"><input type="radio" name="scope" value="all"> <span><b data-i18n="scopeAll"></b><br><span class="muted small" data-i18n="scopeAllHint"></span></span></label>
+      <label class="radio"><input type="radio" name="scope" value="tabs"> <span><b data-i18n="scopeTabs"></b><br><span class="muted small" data-i18n="scopeTabsHint"></span></span></label>
+      <label class="radio"><input type="radio" name="scope" value="private"> <span><b data-i18n="scopePrivate"></b><br><span class="muted small" data-i18n="scopePrivateHint"></span></span></label>
+    </div>
+
+    <div class="sub" id="tabsOpts">
+      <label class="check"><input type="checkbox" id="inheritOpener"> <span data-i18n="optInheritOpener"></span></label>
+      <label class="inline"><span data-i18n="optTabless"></span>
+        <select id="tablessRoute">
+          <option value="direct" data-i18n="tablessDirect"></option>
+          <option value="vpn" data-i18n="tablessVpn"></option>
+        </select>
+      </label>
+      <div>
+        <div><b data-i18n="optRemember"></b></div>
+        <div class="muted small" data-i18n="rememberHint"></div>
+        <div class="row remember">
+          <span id="rememberStatus" class="small grow"></span>
+          <button type="button" id="rememberBtn" data-i18n="rememberAllow"></button>
+        </div>
+      </div>
+      <div>
+        <div><b data-i18n="optContainers"></b></div>
+        <div class="muted small" data-i18n="optContainersHint"></div>
+        <div id="containers" class="containers"></div>
+      </div>
+    </div>
+
+    <div id="privStatus" class="small"></div>
+
+    <p class="muted small" id="hotkeys"></p>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optRouting"></h2>
+    <div class="modes">
+      <label class="radio"><input type="radio" name="mode" value="exclude"> <span><b data-i18n="modeExclude"></b><br><span class="muted small" data-i18n="modeExcludeHint"></span></span></label>
+      <label class="radio"><input type="radio" name="mode" value="include"> <span><b data-i18n="modeInclude"></b><br><span class="muted small" data-i18n="modeIncludeHint"></span></span></label>
+    </div>
+    <div class="lists">
+      <label><span data-i18n="listExclude"></span>
+        <textarea id="excludeList" rows="8" spellcheck="false" placeholder="example.com&#10;bank.example.net&#10;203.0.113.0/24"></textarea>
+      </label>
+      <label><span data-i18n="listInclude"></span>
+        <textarea id="includeList" rows="8" spellcheck="false" placeholder="youtube.com&#10;googlevideo.com&#10;example.org"></textarea>
+      </label>
+    </div>
+    <p class="muted small" data-i18n="listHint"></p>
+    <label class="check"><input type="checkbox" id="bypassLocal"> <span data-i18n="optBypassLocal"></span></label>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optGeo"></h2>
+    <div class="modes">
+      <label class="radio"><input type="radio" name="geoMode" value="off"> <span><b data-i18n="geoOff"></b><br><span class="muted small" data-i18n="geoOffHint"></span></span></label>
+      <label class="radio"><input type="radio" name="geoMode" value="direct"> <span><b data-i18n="geoDirect"></b><br><span class="muted small" data-i18n="geoDirectHint"></span></span></label>
+      <label class="radio"><input type="radio" name="geoMode" value="vpn"> <span><b data-i18n="geoVpn"></b><br><span class="muted small" data-i18n="geoVpnHint"></span></span></label>
+    </div>
+    <div class="sub" id="geoOpts">
+      <div class="row">
+        <input type="search" id="geoSearch" class="grow" data-i18n-placeholder="geoSearch">
+        <label class="check"><input type="checkbox" id="geoOnlySel"> <span data-i18n="geoOnlySelected"></span></label>
+        <button type="button" id="geoClear" data-i18n="geoClear"></button>
+      </div>
+      <div class="small muted" id="geoCount"></div>
+      <div id="geoList" class="countries"></div>
+      <div class="row">
+        <span class="grow small" id="geoDbStatus"></span>
+        <button type="button" id="geoUpdateBtn" data-i18n="geoUpdate"></button>
+      </div>
+      <label class="inline"><span data-i18n="geoDnsLabel"></span>
+        <select id="geoDns">
+          <option value="cloudflare">Cloudflare (cloudflare-dns.com)</option>
+          <option value="google">Google (dns.google)</option>
+          <option value="adguard">AdGuard DNS (unfiltered.adguard-dns.com)</option>
+          <option value="custom" data-i18n="geoDnsCustom"></option>
+        </select>
+      </label>
+      <label id="geoDnsUrlBox"><span data-i18n="geoDnsUrlLabel"></span>
+        <input type="url" id="geoDnsUrl" spellcheck="false" placeholder="https://dns.example.com/dns-query">
+      </label>
+      <p class="muted small" data-i18n="geoHint"></p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optProtection"></h2>
+    <label class="check"><input type="checkbox" id="killSwitch"> <span data-i18n="optKillSwitch"></span></label>
+    <label class="check"><input type="checkbox" id="webrtcProtect"> <span data-i18n="optWebrtc"></span></label>
+    <p class="muted small" data-i18n="optDnsHint"></p>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optStats"></h2>
+    <label><span data-i18n="statsUrlLabel"></span>
+      <input type="url" id="statsUrl" spellcheck="false" placeholder="https://panel.example.com/portal">
+    </label>
+    <p class="muted small" data-i18n="statsHint"></p>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="optAdvanced"></h2>
+    <div class="grid">
+      <label><span data-i18n="fSocksPort"></span> <input type="number" id="port" min="1024" max="65535"></label>
+      <label><span data-i18n="fInfoPort"></span> <input type="number" id="infoPort" min="1024" max="65535"></label>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button type="button" class="primary" id="saveBtn" data-i18n="optSaveSettings"></button>
+  </div>
+
+  <section class="card">
+    <h2 data-i18n="helpTitle"></h2>
+    <ul class="help small">
+      <li><b data-i18n="helpHelperTitle"></b> <span data-i18n="helpHelper"></span></li>
+      <li><b data-i18n="helpServerTitle"></b> <span data-i18n="helpServer"></span></li>
+      <li><b data-i18n="helpSubTitle"></b> <span data-i18n="helpSub"></span></li>
+      <li><b data-i18n="helpLogTitle"></b> <span data-i18n="helpLog"></span></li>
+    </ul>
+    <div class="row"><button type="button" id="logBtn" data-i18n="optLogShow"></button></div>
+    <pre id="log" class="log" hidden></pre>
+  </section>
+</main>
+
+<script src="../lib/i18n.js"></script>
+<script src="../lib/rules.js"></script>
+<script src="../lib/scope.js"></script>
+<script src="../lib/geo.js"></script>
+<script src="../lib/doh.js"></script>
+<script src="../lib/api.js"></script>
+<script src="../lib/toast.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,677 @@
+{
+  "extName": {
+    "message": "XUI Browser Client"
+  },
+  "extDescription": {
+    "message": "Browser-only VPN client for 3x-ui / Xray servers (VLESS, VMess, Trojan, Shadowsocks): local xray-core helper, subscriptions, per-site and per-tab split tunneling."
+  },
+  "titleOff": {
+    "message": "XUI — off"
+  },
+  "titleOn": {
+    "message": "XUI — connected"
+  },
+  "titleConnecting": {
+    "message": "XUI — connecting"
+  },
+  "titleError": {
+    "message": "XUI — error: $1"
+  },
+  "statusOff": {
+    "message": "Off"
+  },
+  "statusOn": {
+    "message": "Connected"
+  },
+  "statusConnecting": {
+    "message": "Connecting…"
+  },
+  "statusError": {
+    "message": "Error"
+  },
+  "errTimeout": {
+    "message": "The server did not respond within 10 s."
+  },
+  "errSocks": {
+    "message": "The local xray tunnel is not running (nothing listens on the SOCKS5 port). It is restarted at the next check."
+  },
+  "errNoServer": {
+    "message": "No server selected. Add one in the settings."
+  },
+  "errHealthHttp": {
+    "message": "The check request returned HTTP $1."
+  },
+  "errPort": {
+    "message": "Port must be a number 1024–65535."
+  },
+  "errNoSuchServer": {
+    "message": "No such server."
+  },
+  "errEmptyDomain": {
+    "message": "Empty domain."
+  },
+  "errNoBackground": {
+    "message": "The background script did not respond."
+  },
+  "durSec": {
+    "message": "$1 s"
+  },
+  "durMin": {
+    "message": "$1 min"
+  },
+  "durHour": {
+    "message": "$1 h"
+  },
+  "ago": {
+    "message": "$1 ago"
+  },
+  "never": {
+    "message": "never"
+  },
+  "ms": {
+    "message": "$1 ms"
+  },
+  "toastClose": {
+    "message": "Close"
+  },
+  "toastCloseAll": {
+    "message": "Close all notifications"
+  },
+  "popupToggleTitle": {
+    "message": "Turn VPN on / off"
+  },
+  "popupServer": {
+    "message": "Server"
+  },
+  "popupMode": {
+    "message": "Mode"
+  },
+  "modeExclude": {
+    "message": "Everything via VPN except the list"
+  },
+  "modeInclude": {
+    "message": "Only listed sites via VPN"
+  },
+  "popupCurrentSite": {
+    "message": "Current site"
+  },
+  "statLatency": {
+    "message": "Latency"
+  },
+  "statChecked": {
+    "message": "Checked"
+  },
+  "statConnected": {
+    "message": "Connected for"
+  },
+  "popupCheckIp": {
+    "message": "Check IP"
+  },
+  "popupSettings": {
+    "message": "Settings"
+  },
+  "popupOnlyFirefox": {
+    "message": "Firefox traffic only · $1"
+  },
+  "popupAddServer": {
+    "message": "Add a server in the settings"
+  },
+  "popupNoServers": {
+    "message": "— no servers —"
+  },
+  "popupChoose": {
+    "message": "— choose —"
+  },
+  "routeVpnOff": {
+    "message": "VPN is off"
+  },
+  "routeVpn": {
+    "message": "via VPN"
+  },
+  "routeDirect": {
+    "message": "direct"
+  },
+  "siteLocal": {
+    "message": "Local address — always direct"
+  },
+  "siteIncludeRemove": {
+    "message": "Remove $1 from the VPN list"
+  },
+  "siteIncludeAdd": {
+    "message": "Route $1 via VPN"
+  },
+  "siteExcludeRemove": {
+    "message": "Route $1 via VPN again"
+  },
+  "siteExcludeAdd": {
+    "message": "Open $1 directly"
+  },
+  "toastVpnOn": {
+    "message": "VPN is on"
+  },
+  "toastVpnOff": {
+    "message": "VPN is off"
+  },
+  "toastServerSelected": {
+    "message": "Server selected"
+  },
+  "toastServerSelectedChecked": {
+    "message": "Server selected, connection checked"
+  },
+  "toastModeSaved": {
+    "message": "Mode saved"
+  },
+  "toastListUpdated": {
+    "message": "List updated. Reload the tab to apply."
+  },
+  "toastIpFailed": {
+    "message": "Could not check the IP: $1"
+  },
+  "optIntro": {
+    "message": "Browser-only VPN for servers of a 3x-ui panel. A small helper on this computer runs xray-core; Firefox reaches it as a local SOCKS5 proxy."
+  },
+  "optServers": {
+    "message": "Servers"
+  },
+  "optAddServer": {
+    "message": "Add server"
+  },
+  "optKeyLabel": {
+    "message": "Server links (vless://, vmess://, trojan://, ss://), one per line — or a subscription address (https://…)"
+  },
+  "optKeyPlaceholder": {
+    "message": "vless://uuid@host:443?type=tcp&security=reality&pbk=…&sni=…&sid=…#Name\n\nor\n\nhttps://panel.example.com:2096/sub/…"
+  },
+  "optChooseFile": {
+    "message": "Choose file…"
+  },
+  "fName": {
+    "message": "Name"
+  },
+  "fNamePlaceholder": {
+    "message": "e.g. Netherlands"
+  },
+  "optStorageHint": {
+    "message": "Links with keys are stored on this computer only, in the helper's folder (owner-only access), not in the Firefox profile."
+  },
+  "optNoServers": {
+    "message": "No servers yet — paste a link or a subscription address below."
+  },
+  "optUseServer": {
+    "message": "Use this server"
+  },
+  "btnDelete": {
+    "message": "Delete"
+  },
+  "confirmDelete": {
+    "message": "Delete server “$1”? Its link with the key will be removed from this computer."
+  },
+  "toastServerDeleted": {
+    "message": "Server deleted"
+  },
+  "errPasteKey": {
+    "message": "Paste a server link or a subscription address."
+  },
+  "errFileTooBig": {
+    "message": "The file is too large."
+  },
+  "toastFileRead": {
+    "message": "Loaded from file. Click “Add”."
+  },
+  "toastSaved": {
+    "message": "Saved"
+  },
+  "optRouting": {
+    "message": "Routing"
+  },
+  "modeExcludeHint": {
+    "message": "Sites from the exclusion list open directly."
+  },
+  "modeIncludeHint": {
+    "message": "All other sites open directly."
+  },
+  "listExclude": {
+    "message": "Exclusions (direct)"
+  },
+  "listInclude": {
+    "message": "Only via VPN"
+  },
+  "listHint": {
+    "message": "One domain per line. A domain includes all its subdomains. IPv4 addresses and CIDR subnets are allowed. Lines starting with # are ignored."
+  },
+  "optBypassLocal": {
+    "message": "Local addresses (localhost, 192.168.*, 10.*, *.local) — always direct"
+  },
+  "optProtection": {
+    "message": "Protection"
+  },
+  "optKillSwitch": {
+    "message": "Kill switch: if the tunnel is down, do not let traffic bypass the VPN"
+  },
+  "optWebrtc": {
+    "message": "Prevent IP leaks through WebRTC while the VPN is on"
+  },
+  "optDnsHint": {
+    "message": "Names of sites routed via VPN are resolved on the server side: Firefox passes the site name into the tunnel (SOCKS5 with remote DNS)."
+  },
+  "optSaveSettings": {
+    "message": "Save settings"
+  },
+  "helpTitle": {
+    "message": "Troubleshooting"
+  },
+  "titleOnTabs": {
+    "message": "XUI — connected, VPN only in marked tabs"
+  },
+  "titleOnPrivate": {
+    "message": "XUI — connected, VPN only in private windows"
+  },
+  "titleTabVpn": {
+    "message": "XUI — this tab goes through the VPN"
+  },
+  "errNoTab": {
+    "message": "No tab to switch."
+  },
+  "menuOpenLinkVpn": {
+    "message": "Open link in a VPN tab"
+  },
+  "menuVpnOn": {
+    "message": "VPN on"
+  },
+  "menuTabVpn": {
+    "message": "VPN in this tab"
+  },
+  "menuServer": {
+    "message": "Server"
+  },
+  "cmdToggleVpn": {
+    "message": "Turn the VPN on / off"
+  },
+  "cmdToggleTabVpn": {
+    "message": "VPN in the current tab on / off"
+  },
+  "popupScope": {
+    "message": "Where the VPN works"
+  },
+  "scopeAll": {
+    "message": "All tabs"
+  },
+  "scopeTabs": {
+    "message": "Only marked tabs"
+  },
+  "scopePrivate": {
+    "message": "Only private windows"
+  },
+  "popupTabVpn": {
+    "message": "VPN in this tab"
+  },
+  "popupTabByContainer": {
+    "message": "Always on: the tab is in the “$1” container."
+  },
+  "privNotAllowed": {
+    "message": "The add-on is not allowed in private windows: about:addons → XUI Browser Client → “Run in Private Windows” → Allow."
+  },
+  "privAllowed": {
+    "message": "✓ The add-on is allowed in private windows."
+  },
+  "privThisTabDirect": {
+    "message": "This is a normal window: it goes directly. Open a private window to use the VPN."
+  },
+  "toastScopeSaved": {
+    "message": "Saved. Reload open tabs to apply."
+  },
+  "toastTabVpnOn": {
+    "message": "VPN is on in this tab. Reload the page to apply."
+  },
+  "toastTabVpnOff": {
+    "message": "VPN is off in this tab."
+  },
+  "optScope": {
+    "message": "Where the VPN works"
+  },
+  "scopeAllHint": {
+    "message": "Every tab and window uses the VPN (the site lists below still apply)."
+  },
+  "scopeTabsHint": {
+    "message": "Only tabs you mark in the toolbar popup, with the hotkey or “Open link in a VPN tab”, plus tabs of the containers chosen below. The VPN stays on the tab whatever site you open in it. Site lists still apply inside those tabs."
+  },
+  "scopePrivateHint": {
+    "message": "Only private windows use the VPN; normal windows go directly."
+  },
+  "optInheritOpener": {
+    "message": "Tabs opened from a VPN tab also use the VPN"
+  },
+  "optTabless": {
+    "message": "Requests without a tab (service workers, prefetch):"
+  },
+  "tablessDirect": {
+    "message": "direct"
+  },
+  "tablessVpn": {
+    "message": "via VPN"
+  },
+  "optContainers": {
+    "message": "Containers always via VPN"
+  },
+  "optContainersHint": {
+    "message": "All tabs of the selected Firefox containers use the VPN."
+  },
+  "containersOff": {
+    "message": "Containers are turned off in Firefox (Settings → General → Tabs → Enable Container Tabs)."
+  },
+  "containersNone": {
+    "message": "No containers yet."
+  },
+  "hotkeysList": {
+    "message": "Hotkeys: $1."
+  },
+  "hotkeysHint": {
+    "message": "Change them: about:addons → ⚙ → Manage Extension Shortcuts."
+  },
+  "privNotCovered": {
+    "message": "Private windows are not covered: the add-on is not allowed there, so they bypass the VPN and the kill switch. about:addons → XUI Browser Client → “Run in Private Windows” → Allow."
+  },
+  "popupStats": {
+    "message": "Statistics"
+  },
+  "ipWithVpn": {
+    "message": "With VPN"
+  },
+  "ipWithoutVpn": {
+    "message": "Without VPN"
+  },
+  "ipVpnOff": {
+    "message": "VPN is off"
+  },
+  "ipFailed": {
+    "message": "failed: $1"
+  },
+  "ipTabVpn": {
+    "message": "This tab uses the VPN address."
+  },
+  "ipTabVpnDown": {
+    "message": "This tab is set to use the VPN, but the VPN is not working now."
+  },
+  "ipTabDirect": {
+    "message": "This tab goes directly, without the VPN."
+  },
+  "ipInfoEnable": {
+    "message": "Show country, provider and address type (asks proxycheck.io about these two addresses)"
+  },
+  "ipKind_vpn": {
+    "message": "VPN"
+  },
+  "ipKind_proxy": {
+    "message": "Proxy"
+  },
+  "ipKind_tor": {
+    "message": "Tor"
+  },
+  "ipKind_hosting": {
+    "message": "Hosting"
+  },
+  "ipKind_residential": {
+    "message": "Home ISP"
+  },
+  "ipKind_wireless": {
+    "message": "Mobile"
+  },
+  "ipKind_business": {
+    "message": "Business"
+  },
+  "ipKind_education": {
+    "message": "Education"
+  },
+  "ipKind_government": {
+    "message": "Government"
+  },
+  "ipKind_other": {
+    "message": "Other"
+  },
+  "errIpAnswer": {
+    "message": "unexpected answer of the IP service"
+  },
+  "optGeo": {
+    "message": "Countries"
+  },
+  "geoOff": {
+    "message": "Do not use countries"
+  },
+  "geoOffHint": {
+    "message": "Only the site lists above decide."
+  },
+  "geoDirect": {
+    "message": "Selected countries without VPN"
+  },
+  "geoDirectHint": {
+    "message": "Sites hosted in the selected countries open directly, all other countries go via VPN."
+  },
+  "geoVpn": {
+    "message": "Only selected countries via VPN"
+  },
+  "geoVpnHint": {
+    "message": "Sites hosted in the selected countries go via VPN, all other countries open directly."
+  },
+  "geoSearch": {
+    "message": "Find a country…"
+  },
+  "geoOnlySelected": {
+    "message": "Selected only"
+  },
+  "geoClear": {
+    "message": "Clear"
+  },
+  "geoNothing": {
+    "message": "Nothing found."
+  },
+  "geoSelected": {
+    "message": "Selected: $1 — $2"
+  },
+  "geoNoneSelected": {
+    "message": "No countries selected."
+  },
+  "geoDbOk": {
+    "message": "Country database: $1 ranges, updated $2."
+  },
+  "geoDbMissing": {
+    "message": "Country database is not downloaded yet."
+  },
+  "geoUpdate": {
+    "message": "Update database"
+  },
+  "geoUpdating": {
+    "message": "Downloading…"
+  },
+  "geoHint": {
+    "message": "Sites named in the lists above always follow the lists; countries apply to all other sites. To learn a site's country the add-on asks the DNS service chosen above for the site's address. The request (DNS over HTTPS) goes inside the VPN tunnel, so your provider does not see those names; the DNS service sees them coming from your VPN server. Your own server must support DNS over HTTPS (AdGuard Home, AdGuard DNS personal address, etc.). If the country cannot be determined — or the tunnel is down — the routing mode above decides. Only IPv4 is covered. The database (about 8 MB, ip-location-db) is downloaded from cdn.jsdelivr.net when you press “Update database”."
+  },
+  "toastGeoUpdated": {
+    "message": "Country database updated: $1 ranges"
+  },
+  "errGeoHttp": {
+    "message": "HTTP $1"
+  },
+  "errGeoDownload": {
+    "message": "Could not download the country database: $1"
+  },
+  "errGeoFormat": {
+    "message": "The downloaded country database is empty or damaged."
+  },
+  "optStats": {
+    "message": "Statistics"
+  },
+  "statsUrlLabel": {
+    "message": "Address of the statistics page"
+  },
+  "statsHint": {
+    "message": "If set, the popup shows a “Statistics” button that opens this page — for example your subscription page in the 3x-ui panel."
+  },
+  "errStatsUrl": {
+    "message": "The statistics address must start with http:// or https://"
+  },
+  "optRemember": {
+    "message": "Keep VPN tabs after a restart"
+  },
+  "rememberHint": {
+    "message": "Without this, a marked tab that Firefox restores after a restart (or with “Reopen closed tab”) opens without the VPN. To keep the mark with the tab, the add-on needs Firefox's permission “Access recently closed tabs”. It stores one yes/no mark per tab and does not read your closed tabs or history."
+  },
+  "rememberAllow": {
+    "message": "Allow"
+  },
+  "rememberOn": {
+    "message": "✓ Marked tabs keep the VPN after a restart."
+  },
+  "rememberOff": {
+    "message": "Not allowed yet: marks last until Firefox is closed."
+  },
+  "toastRememberOn": {
+    "message": "VPN tabs will now survive a restart"
+  },
+  "toastRememberDenied": {
+    "message": "Permission was not granted"
+  },
+  "popupTabNotKept": {
+    "message": "After a Firefox restart this tab will open without the VPN. To keep it: Settings → “Keep VPN tabs after a restart”."
+  },
+  "geoDnsLabel": {
+    "message": "DNS service (asked through the VPN):"
+  },
+  "geoDnsCustom": {
+    "message": "My own server…"
+  },
+  "geoDnsUrlLabel": {
+    "message": "Address of your DNS-over-HTTPS server"
+  },
+  "errDnsUrl": {
+    "message": "Enter the address of your DNS server: it must start with https:// (DNS over HTTPS, RFC 8484), for example https://dns.example.com/dns-query"
+  },
+  "errTunnelDown": {
+    "message": "The tunnel is running, but the server does not answer. Check that the server is reachable and the link is still valid; the exact reason is in the Xray log (Settings)."
+  },
+  "errNoHelper": {
+    "message": "No connection to the helper on this computer. Install it (scripts/install.sh, macOS and Linux) and restart Firefox. ($1)"
+  },
+  "errHelperUnknown": {
+    "message": "Unknown helper error."
+  },
+  "errPortsSame": {
+    "message": "The SOCKS5 port and the statistics port must differ."
+  },
+  "optNameHint": {
+    "message": "The name applies when a single link is added; otherwise the names come from the links themselves."
+  },
+  "optImport": {
+    "message": "Add"
+  },
+  "btnRename": {
+    "message": "Rename"
+  },
+  "promptRename": {
+    "message": "New server name"
+  },
+  "toastRenamed": {
+    "message": "Renamed"
+  },
+  "toastImported": {
+    "message": "Servers in the list: $1"
+  },
+  "toastImportedOne": {
+    "message": "Server “$1” added"
+  },
+  "toastImportErrors": {
+    "message": "Skipped: $1"
+  },
+  "toastSubRemoved": {
+    "message": "Servers no longer in the subscription removed: $1"
+  },
+  "optSubs": {
+    "message": "Subscriptions"
+  },
+  "subMeta": {
+    "message": "servers: $1"
+  },
+  "metaSub": {
+    "message": "subscription $1"
+  },
+  "metaError": {
+    "message": "Error: $1"
+  },
+  "btnRefresh": {
+    "message": "Refresh"
+  },
+  "optHelper": {
+    "message": "Helper on this computer"
+  },
+  "optHelperCheck": {
+    "message": "Check"
+  },
+  "helperOk": {
+    "message": "✓ Helper connected"
+  },
+  "helperMissing": {
+    "message": "✗ Helper not found"
+  },
+  "helperMeta": {
+    "message": "helper $1 · $2 · data: $3"
+  },
+  "helperNoCore": {
+    "message": "xray-core NOT found"
+  },
+  "helperHint": {
+    "message": "Install the helper (scripts/install.sh, macOS and Linux) and restart Firefox."
+  },
+  "toastHelperOk": {
+    "message": "The helper responds"
+  },
+  "toastHelperFail": {
+    "message": "The helper does not respond"
+  },
+  "optAdvanced": {
+    "message": "Advanced"
+  },
+  "fSocksPort": {
+    "message": "Local SOCKS5 port"
+  },
+  "fInfoPort": {
+    "message": "Statistics port"
+  },
+  "optLogShow": {
+    "message": "Show the Xray log"
+  },
+  "logEmpty": {
+    "message": "(the log is empty)"
+  },
+  "statRx": {
+    "message": "Received"
+  },
+  "statTx": {
+    "message": "Sent"
+  },
+  "byteUnits": {
+    "message": "B,KB,MB,GB,TB"
+  },
+  "helpHelperTitle": {
+    "message": "Helper."
+  },
+  "helpHelper": {
+    "message": "A browser cannot speak VLESS, VMess, Trojan or Shadowsocks itself: the add-on needs the helper (xui_host) and xray-core on this computer — see the “Helper” card at the top."
+  },
+  "helpServerTitle": {
+    "message": "Server."
+  },
+  "helpServer": {
+    "message": "If the status says the server does not answer: check in 3x-ui that the inbound is enabled, the client has not expired or used up its traffic, and that the link was copied in full. A Reality link must contain pbk, sni and sid."
+  },
+  "helpSubTitle": {
+    "message": "Subscription."
+  },
+  "helpSub": {
+    "message": "Use the ordinary subscription address of the panel (a base64 list of links), not the JSON one. “Refresh” reads it again; this request goes directly, not through the VPN."
+  },
+  "helpLogTitle": {
+    "message": "Log."
+  },
+  "helpLog": {
+    "message": "The exact reason of a failed connection is in the Xray log:"
+  }
+}

@@ -1,0 +1,61 @@
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-size: 20px; margin: 0; }
+h2 { font-size: 15px; margin: 0 0 12px; }
+.card { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+label { display: flex; flex-direction: column; gap: 4px; }
+label.check, label.radio { flex-direction: row; align-items: flex-start; gap: 8px; margin: 6px 0; }
+label.check input, label.radio input { margin-top: 3px; }
+code { background: var(--bg-soft); padding: 0 4px; border-radius: 4px; }
+
+.profiles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.profile {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center;
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+}
+.profile.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.profile .name { font-weight: 600; }
+.profile .meta { font-size: 12px; color: var(--muted); word-break: break-all; }
+.profile .btns { display: flex; gap: 6px; }
+.empty { color: var(--muted); padding: 8px 0; }
+
+details summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.import { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.file-btn { display: inline-block; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; background: var(--bg-soft); }
+
+.lists, .ports { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+@media (max-width: 640px) {
+  .lists, .ports { grid-template-columns: 1fr; }
+  .profile { grid-template-columns: auto 1fr; }
+  .profile .btns { grid-column: 1 / -1; }
+}
+.actions { position: sticky; bottom: 0; padding: 12px 0; background: var(--bg); display: flex; justify-content: flex-end; }
+pre { background: var(--bg-soft); border-radius: 8px; padding: 12px; max-height: 360px; overflow: auto; font-size: 12px; white-space: pre-wrap; word-break: break-all; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+.grid [hidden] { display: none; }
+.warnings { border-left: 3px solid var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+.warnings ul { margin: 4px 0 0; padding-left: 18px; }
+.help { padding-left: 18px; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.badge { font-size: 11px; padding: 1px 6px; border-radius: 8px; background: var(--bg-soft); color: var(--muted); margin-left: 6px; font-weight: 400; }
+
+.sub { margin: 8px 0 0 26px; padding: 10px 12px; border-left: 3px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+label.inline { flex-direction: row; align-items: center; gap: 8px; }
+label.inline select { width: auto; }
+.containers { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; }
+.containers label { flex-direction: row; align-items: center; gap: 6px; }
+.cdot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.ok-text { color: var(--ok); }
+.err-text { color: var(--err); }
+@media (max-width: 640px) { .sub { margin-left: 0; } }
+
+.version { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 6px; }
+.countries { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 14px; max-height: 260px; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px; }
+.countries label { flex-direction: row; align-items: center; gap: 6px; font-size: 13px; }
+.countries .code { color: var(--muted); font-size: 11px; }
+#geoOpts .row { gap: 10px; align-items: center; }
+#geoOpts .check { margin: 0; white-space: nowrap; }
+.remember { gap: 10px; align-items: center; margin-top: 6px; }
+
+.log { max-height: 320px; overflow: auto; background: var(--bg-soft); border-radius: var(--radius); padding: 10px; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+#subsBox { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }

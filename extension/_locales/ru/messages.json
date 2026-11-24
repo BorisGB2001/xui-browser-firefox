@@ -1,0 +1,677 @@
+{
+  "extName": {
+    "message": "XUI — клиент для браузера"
+  },
+  "extDescription": {
+    "message": "VPN-клиент только для браузера для серверов 3x-ui / Xray (VLESS, VMess, Trojan, Shadowsocks): локальный помощник с xray-core, подписки, раздельное туннелирование по сайтам и вкладкам."
+  },
+  "titleOff": {
+    "message": "XUI — выключен"
+  },
+  "titleOn": {
+    "message": "XUI — подключено"
+  },
+  "titleConnecting": {
+    "message": "XUI — подключение"
+  },
+  "titleError": {
+    "message": "XUI — ошибка: $1"
+  },
+  "statusOff": {
+    "message": "Выключен"
+  },
+  "statusOn": {
+    "message": "Подключено"
+  },
+  "statusConnecting": {
+    "message": "Подключение…"
+  },
+  "statusError": {
+    "message": "Ошибка"
+  },
+  "errTimeout": {
+    "message": "Сервер не ответил за 10 с."
+  },
+  "errSocks": {
+    "message": "Локальный туннель xray не запущен (порт SOCKS5 никто не слушает). Он будет перезапущен при следующей проверке."
+  },
+  "errNoServer": {
+    "message": "Не выбран сервер. Добавьте его в настройках."
+  },
+  "errHealthHttp": {
+    "message": "Проверочный запрос вернул HTTP $1."
+  },
+  "errPort": {
+    "message": "Порт должен быть числом 1024–65535."
+  },
+  "errNoSuchServer": {
+    "message": "Нет такого сервера."
+  },
+  "errEmptyDomain": {
+    "message": "Пустой домен."
+  },
+  "errNoBackground": {
+    "message": "Фоновый скрипт не ответил."
+  },
+  "durSec": {
+    "message": "$1 с"
+  },
+  "durMin": {
+    "message": "$1 мин"
+  },
+  "durHour": {
+    "message": "$1 ч"
+  },
+  "ago": {
+    "message": "$1 назад"
+  },
+  "never": {
+    "message": "нет"
+  },
+  "ms": {
+    "message": "$1 мс"
+  },
+  "toastClose": {
+    "message": "Закрыть"
+  },
+  "toastCloseAll": {
+    "message": "Закрыть все уведомления"
+  },
+  "popupToggleTitle": {
+    "message": "Включить / выключить VPN"
+  },
+  "popupServer": {
+    "message": "Сервер"
+  },
+  "popupMode": {
+    "message": "Режим"
+  },
+  "modeExclude": {
+    "message": "Всё через VPN, кроме списка"
+  },
+  "modeInclude": {
+    "message": "Только сайты из списка через VPN"
+  },
+  "popupCurrentSite": {
+    "message": "Текущий сайт"
+  },
+  "statLatency": {
+    "message": "Задержка"
+  },
+  "statChecked": {
+    "message": "Проверено"
+  },
+  "statConnected": {
+    "message": "Подключено"
+  },
+  "popupCheckIp": {
+    "message": "Проверить IP"
+  },
+  "popupSettings": {
+    "message": "Настройки"
+  },
+  "popupOnlyFirefox": {
+    "message": "Только трафик Firefox · $1"
+  },
+  "popupAddServer": {
+    "message": "Добавьте сервер в настройках"
+  },
+  "popupNoServers": {
+    "message": "— нет серверов —"
+  },
+  "popupChoose": {
+    "message": "— выберите —"
+  },
+  "routeVpnOff": {
+    "message": "VPN выключен"
+  },
+  "routeVpn": {
+    "message": "через VPN"
+  },
+  "routeDirect": {
+    "message": "напрямую"
+  },
+  "siteLocal": {
+    "message": "Локальный адрес — всегда напрямую"
+  },
+  "siteIncludeRemove": {
+    "message": "Убрать $1 из списка VPN"
+  },
+  "siteIncludeAdd": {
+    "message": "Пускать $1 через VPN"
+  },
+  "siteExcludeRemove": {
+    "message": "Вернуть $1 в VPN"
+  },
+  "siteExcludeAdd": {
+    "message": "Открывать $1 напрямую"
+  },
+  "toastVpnOn": {
+    "message": "VPN включён"
+  },
+  "toastVpnOff": {
+    "message": "VPN выключен"
+  },
+  "toastServerSelected": {
+    "message": "Сервер выбран"
+  },
+  "toastServerSelectedChecked": {
+    "message": "Сервер выбран, подключение проверено"
+  },
+  "toastModeSaved": {
+    "message": "Режим сохранён"
+  },
+  "toastListUpdated": {
+    "message": "Список обновлён. Перезагрузите вкладку, чтобы применить."
+  },
+  "toastIpFailed": {
+    "message": "Не удалось проверить IP: $1"
+  },
+  "optIntro": {
+    "message": "VPN только для браузера для серверов панели 3x-ui. Небольшой помощник на этом компьютере запускает xray-core; Firefox ходит через него как через локальный SOCKS5-прокси."
+  },
+  "optServers": {
+    "message": "Серверы"
+  },
+  "optAddServer": {
+    "message": "Добавить сервер"
+  },
+  "optKeyLabel": {
+    "message": "Ссылки серверов (vless://, vmess://, trojan://, ss://), по одной в строке — или адрес подписки (https://…)"
+  },
+  "optKeyPlaceholder": {
+    "message": "vless://uuid@host:443?type=tcp&security=reality&pbk=…&sni=…&sid=…#Название\n\nили\n\nhttps://panel.example.com:2096/sub/…"
+  },
+  "optChooseFile": {
+    "message": "Выбрать файл…"
+  },
+  "fName": {
+    "message": "Название"
+  },
+  "fNamePlaceholder": {
+    "message": "Например: Нидерланды"
+  },
+  "optStorageHint": {
+    "message": "Ссылки с ключами хранятся только на этом компьютере, в папке помощника (доступ только владельцу), а не в профиле Firefox."
+  },
+  "optNoServers": {
+    "message": "Серверов пока нет — вставьте ссылку или адрес подписки ниже."
+  },
+  "optUseServer": {
+    "message": "Использовать этот сервер"
+  },
+  "btnDelete": {
+    "message": "Удалить"
+  },
+  "confirmDelete": {
+    "message": "Удалить сервер «$1»? Его ссылка с ключом будет удалена с этого компьютера."
+  },
+  "toastServerDeleted": {
+    "message": "Сервер удалён"
+  },
+  "errPasteKey": {
+    "message": "Вставьте ссылку сервера или адрес подписки."
+  },
+  "errFileTooBig": {
+    "message": "Файл слишком большой."
+  },
+  "toastFileRead": {
+    "message": "Прочитано из файла. Нажмите «Добавить»."
+  },
+  "toastSaved": {
+    "message": "Сохранено"
+  },
+  "optRouting": {
+    "message": "Маршрутизация"
+  },
+  "modeExcludeHint": {
+    "message": "Сайты из списка исключений открываются напрямую."
+  },
+  "modeIncludeHint": {
+    "message": "Остальные сайты открываются напрямую."
+  },
+  "listExclude": {
+    "message": "Исключения (напрямую)"
+  },
+  "listInclude": {
+    "message": "Только через VPN"
+  },
+  "listHint": {
+    "message": "По одному домену в строке. Домен включает все поддомены. Можно указывать IPv4 и подсети CIDR. Строки с # игнорируются."
+  },
+  "optBypassLocal": {
+    "message": "Локальные адреса (localhost, 192.168.*, 10.*, *.local) — всегда напрямую"
+  },
+  "optProtection": {
+    "message": "Защита"
+  },
+  "optKillSwitch": {
+    "message": "Kill switch: если туннель не работает, не пускать трафик в обход VPN"
+  },
+  "optWebrtc": {
+    "message": "Защита от утечки IP через WebRTC, пока VPN включён"
+  },
+  "optDnsHint": {
+    "message": "DNS-имена сайтов через VPN разрешаются на стороне сервера: Firefox передаёт имя сайта в туннель (SOCKS5 с удалённым DNS)."
+  },
+  "optSaveSettings": {
+    "message": "Сохранить настройки"
+  },
+  "helpTitle": {
+    "message": "Если не подключается"
+  },
+  "titleOnTabs": {
+    "message": "XUI — подключено, VPN только в отмеченных вкладках"
+  },
+  "titleOnPrivate": {
+    "message": "XUI — подключено, VPN только в приватных окнах"
+  },
+  "titleTabVpn": {
+    "message": "XUI — эта вкладка идёт через VPN"
+  },
+  "errNoTab": {
+    "message": "Нет вкладки для переключения."
+  },
+  "menuOpenLinkVpn": {
+    "message": "Открыть ссылку во вкладке с VPN"
+  },
+  "menuVpnOn": {
+    "message": "VPN включён"
+  },
+  "menuTabVpn": {
+    "message": "VPN в этой вкладке"
+  },
+  "menuServer": {
+    "message": "Сервер"
+  },
+  "cmdToggleVpn": {
+    "message": "Включить / выключить VPN"
+  },
+  "cmdToggleTabVpn": {
+    "message": "VPN в текущей вкладке: вкл / выкл"
+  },
+  "popupScope": {
+    "message": "Где работает VPN"
+  },
+  "scopeAll": {
+    "message": "Во всех вкладках"
+  },
+  "scopeTabs": {
+    "message": "Только в отмеченных вкладках"
+  },
+  "scopePrivate": {
+    "message": "Только в приватных окнах"
+  },
+  "popupTabVpn": {
+    "message": "VPN в этой вкладке"
+  },
+  "popupTabByContainer": {
+    "message": "Всегда включён: вкладка в контейнере «$1»."
+  },
+  "privNotAllowed": {
+    "message": "Расширению не разрешена работа в приватных окнах: about:addons → XUI Browser Client → «Запуск в приватных окнах» → Разрешить."
+  },
+  "privAllowed": {
+    "message": "✓ Расширению разрешена работа в приватных окнах."
+  },
+  "privThisTabDirect": {
+    "message": "Это обычное окно: оно идёт напрямую. Откройте приватное окно, чтобы работать через VPN."
+  },
+  "toastScopeSaved": {
+    "message": "Сохранено. Перезагрузите открытые вкладки, чтобы применить."
+  },
+  "toastTabVpnOn": {
+    "message": "VPN включён в этой вкладке. Перезагрузите страницу, чтобы применить."
+  },
+  "toastTabVpnOff": {
+    "message": "VPN в этой вкладке выключен."
+  },
+  "optScope": {
+    "message": "Где работает VPN"
+  },
+  "scopeAllHint": {
+    "message": "VPN во всех вкладках и окнах (списки сайтов ниже действуют)."
+  },
+  "scopeTabsHint": {
+    "message": "Только вкладки, отмеченные в окне расширения, горячей клавишей или через «Открыть ссылку во вкладке с VPN», а также вкладки выбранных ниже контейнеров. VPN остаётся на вкладке, какой бы сайт в ней ни открыть. Списки сайтов внутри таких вкладок действуют."
+  },
+  "scopePrivateHint": {
+    "message": "VPN только в приватных окнах, обычные окна идут напрямую."
+  },
+  "optInheritOpener": {
+    "message": "Вкладки, открытые из вкладки с VPN, тоже идут через VPN"
+  },
+  "optTabless": {
+    "message": "Запросы без вкладки (service worker, предзагрузка):"
+  },
+  "tablessDirect": {
+    "message": "напрямую"
+  },
+  "tablessVpn": {
+    "message": "через VPN"
+  },
+  "optContainers": {
+    "message": "Контейнеры всегда через VPN"
+  },
+  "optContainersHint": {
+    "message": "Все вкладки выбранных контейнеров Firefox идут через VPN."
+  },
+  "containersOff": {
+    "message": "Контейнеры в Firefox выключены (Настройки → Основные → Вкладки → Включить вкладки в контейнере)."
+  },
+  "containersNone": {
+    "message": "Контейнеров пока нет."
+  },
+  "hotkeysList": {
+    "message": "Горячие клавиши: $1."
+  },
+  "hotkeysHint": {
+    "message": "Изменить: about:addons → ⚙ → Управление горячими клавишами расширений."
+  },
+  "privNotCovered": {
+    "message": "Приватные окна не защищены: расширению там не разрешено работать, поэтому они идут мимо VPN и kill switch. about:addons → XUI Browser Client → «Запуск в приватных окнах» → Разрешить."
+  },
+  "popupStats": {
+    "message": "Статистика"
+  },
+  "ipWithVpn": {
+    "message": "С VPN"
+  },
+  "ipWithoutVpn": {
+    "message": "Без VPN"
+  },
+  "ipVpnOff": {
+    "message": "VPN выключен"
+  },
+  "ipFailed": {
+    "message": "ошибка: $1"
+  },
+  "ipTabVpn": {
+    "message": "Эта вкладка выходит с адреса VPN."
+  },
+  "ipTabVpnDown": {
+    "message": "Эта вкладка настроена на VPN, но VPN сейчас не работает."
+  },
+  "ipTabDirect": {
+    "message": "Эта вкладка идёт напрямую, без VPN."
+  },
+  "ipInfoEnable": {
+    "message": "Показать страну, провайдера и тип адреса (эти два адреса будут отправлены на proxycheck.io)"
+  },
+  "ipKind_vpn": {
+    "message": "VPN"
+  },
+  "ipKind_proxy": {
+    "message": "Прокси"
+  },
+  "ipKind_tor": {
+    "message": "Tor"
+  },
+  "ipKind_hosting": {
+    "message": "Хостинг"
+  },
+  "ipKind_residential": {
+    "message": "Домашний"
+  },
+  "ipKind_wireless": {
+    "message": "Мобильный"
+  },
+  "ipKind_business": {
+    "message": "Организация"
+  },
+  "ipKind_education": {
+    "message": "Образование"
+  },
+  "ipKind_government": {
+    "message": "Госорган"
+  },
+  "ipKind_other": {
+    "message": "Другое"
+  },
+  "errIpAnswer": {
+    "message": "неожиданный ответ сервиса IP"
+  },
+  "optGeo": {
+    "message": "Страны"
+  },
+  "geoOff": {
+    "message": "Не учитывать страны"
+  },
+  "geoOffHint": {
+    "message": "Решают только списки сайтов выше."
+  },
+  "geoDirect": {
+    "message": "Отмеченные страны — без VPN"
+  },
+  "geoDirectHint": {
+    "message": "Сайты, размещённые в отмеченных странах, открываются напрямую, все остальные страны идут через VPN."
+  },
+  "geoVpn": {
+    "message": "Через VPN — только отмеченные страны"
+  },
+  "geoVpnHint": {
+    "message": "Сайты, размещённые в отмеченных странах, идут через VPN, все остальные страны открываются напрямую."
+  },
+  "geoSearch": {
+    "message": "Найти страну…"
+  },
+  "geoOnlySelected": {
+    "message": "Только отмеченные"
+  },
+  "geoClear": {
+    "message": "Снять все"
+  },
+  "geoNothing": {
+    "message": "Ничего не найдено."
+  },
+  "geoSelected": {
+    "message": "Отмечено: $1 — $2"
+  },
+  "geoNoneSelected": {
+    "message": "Страны не отмечены."
+  },
+  "geoDbOk": {
+    "message": "База адресов по странам: $1 диапазонов, обновлена $2."
+  },
+  "geoDbMissing": {
+    "message": "База адресов по странам ещё не загружена."
+  },
+  "geoUpdate": {
+    "message": "Обновить базу"
+  },
+  "geoUpdating": {
+    "message": "Загрузка…"
+  },
+  "geoHint": {
+    "message": "Сайты из списков выше всегда идут по спискам; страны действуют на все остальные сайты. Чтобы узнать страну сайта, расширение спрашивает его адрес у выбранного выше DNS-сервиса. Запрос (DNS-over-HTTPS) идёт внутри туннеля VPN, поэтому ваш провайдер этих имён не видит; DNS-сервис видит их с адреса вашего VPN-сервера. Свой сервер должен поддерживать DNS-over-HTTPS (AdGuard Home, личный адрес AdGuard DNS и т. п.). Если страну определить не удалось или туннель не работает, решает режим маршрутизации выше. Учитывается только IPv4. База (около 8 МБ, ip-location-db) скачивается с cdn.jsdelivr.net по кнопке «Обновить базу»."
+  },
+  "toastGeoUpdated": {
+    "message": "База стран обновлена: $1 диапазонов"
+  },
+  "errGeoHttp": {
+    "message": "HTTP $1"
+  },
+  "errGeoDownload": {
+    "message": "Не удалось скачать базу стран: $1"
+  },
+  "errGeoFormat": {
+    "message": "Скачанная база стран пуста или повреждена."
+  },
+  "optStats": {
+    "message": "Статистика"
+  },
+  "statsUrlLabel": {
+    "message": "Адрес страницы статистики"
+  },
+  "statsHint": {
+    "message": "Если адрес задан, в окне расширения появится кнопка «Статистика», которая открывает эту страницу — например, страницу вашей подписки в панели 3x-ui."
+  },
+  "errStatsUrl": {
+    "message": "Адрес статистики должен начинаться с http:// или https://"
+  },
+  "optRemember": {
+    "message": "Сохранять VPN-вкладки после перезапуска"
+  },
+  "rememberHint": {
+    "message": "Без этого отмеченная вкладка, которую Firefox восстановил после перезапуска (или через «Восстановить закрытую вкладку»), откроется без VPN. Чтобы хранить отметку вместе с вкладкой, расширению нужно разрешение Firefox «Доступ к недавно закрытым вкладкам». Расширение хранит только отметку «да/нет» у вкладки и не читает ваши закрытые вкладки и историю."
+  },
+  "rememberAllow": {
+    "message": "Разрешить"
+  },
+  "rememberOn": {
+    "message": "✓ Отмеченные вкладки сохраняют VPN после перезапуска."
+  },
+  "rememberOff": {
+    "message": "Пока не разрешено: отметки действуют до закрытия Firefox."
+  },
+  "toastRememberOn": {
+    "message": "VPN-вкладки теперь переживут перезапуск"
+  },
+  "toastRememberDenied": {
+    "message": "Разрешение не выдано"
+  },
+  "popupTabNotKept": {
+    "message": "После перезапуска Firefox эта вкладка откроется без VPN. Чтобы сохранить: Настройки → «Сохранять VPN-вкладки после перезапуска»."
+  },
+  "geoDnsLabel": {
+    "message": "DNS-сервис (запросы идут через VPN):"
+  },
+  "geoDnsCustom": {
+    "message": "Свой сервер…"
+  },
+  "geoDnsUrlLabel": {
+    "message": "Адрес вашего сервера DNS-over-HTTPS"
+  },
+  "errDnsUrl": {
+    "message": "Укажите адрес своего DNS-сервера: он должен начинаться с https:// (DNS-over-HTTPS, RFC 8484), например https://dns.example.com/dns-query"
+  },
+  "errTunnelDown": {
+    "message": "Туннель запущен, но сервер не отвечает. Проверьте, что сервер доступен и ссылка ещё действует; точная причина — в журнале Xray (Настройки)."
+  },
+  "errNoHelper": {
+    "message": "Нет связи с помощником на этом компьютере. Установите его (scripts/install.sh, macOS и Linux) и перезапустите Firefox. ($1)"
+  },
+  "errHelperUnknown": {
+    "message": "Неизвестная ошибка помощника."
+  },
+  "errPortsSame": {
+    "message": "Порты SOCKS5 и статистики должны различаться."
+  },
+  "optNameHint": {
+    "message": "Название действует, когда добавляется одна ссылка; иначе названия берутся из самих ссылок."
+  },
+  "optImport": {
+    "message": "Добавить"
+  },
+  "btnRename": {
+    "message": "Переименовать"
+  },
+  "promptRename": {
+    "message": "Новое название сервера"
+  },
+  "toastRenamed": {
+    "message": "Переименовано"
+  },
+  "toastImported": {
+    "message": "Серверов в списке: $1"
+  },
+  "toastImportedOne": {
+    "message": "Сервер «$1» добавлен"
+  },
+  "toastImportErrors": {
+    "message": "Пропущено: $1"
+  },
+  "toastSubRemoved": {
+    "message": "Удалено серверов, которых больше нет в подписке: $1"
+  },
+  "optSubs": {
+    "message": "Подписки"
+  },
+  "subMeta": {
+    "message": "серверов: $1"
+  },
+  "metaSub": {
+    "message": "подписка $1"
+  },
+  "metaError": {
+    "message": "Ошибка: $1"
+  },
+  "btnRefresh": {
+    "message": "Обновить"
+  },
+  "optHelper": {
+    "message": "Помощник на компьютере"
+  },
+  "optHelperCheck": {
+    "message": "Проверить"
+  },
+  "helperOk": {
+    "message": "✓ Помощник подключён"
+  },
+  "helperMissing": {
+    "message": "✗ Помощник не найден"
+  },
+  "helperMeta": {
+    "message": "помощник $1 · $2 · данные: $3"
+  },
+  "helperNoCore": {
+    "message": "xray-core НЕ найден"
+  },
+  "helperHint": {
+    "message": "Установите помощник (scripts/install.sh, macOS и Linux) и перезапустите Firefox."
+  },
+  "toastHelperOk": {
+    "message": "Помощник отвечает"
+  },
+  "toastHelperFail": {
+    "message": "Помощник не отвечает"
+  },
+  "optAdvanced": {
+    "message": "Дополнительно"
+  },
+  "fSocksPort": {
+    "message": "Локальный SOCKS5-порт"
+  },
+  "fInfoPort": {
+    "message": "Порт статистики"
+  },
+  "optLogShow": {
+    "message": "Показать журнал Xray"
+  },
+  "logEmpty": {
+    "message": "(журнал пуст)"
+  },
+  "statRx": {
+    "message": "Принято"
+  },
+  "statTx": {
+    "message": "Отправлено"
+  },
+  "byteUnits": {
+    "message": "Б,КБ,МБ,ГБ,ТБ"
+  },
+  "helpHelperTitle": {
+    "message": "Помощник."
+  },
+  "helpHelper": {
+    "message": "Браузер сам не умеет VLESS, VMess, Trojan и Shadowsocks: расширению нужны помощник (xui_host) и xray-core на этом компьютере — см. карточку «Помощник» вверху."
+  },
+  "helpServerTitle": {
+    "message": "Сервер."
+  },
+  "helpServer": {
+    "message": "Если статус говорит, что сервер не отвечает: проверьте в 3x-ui, что inbound включён, у клиента не истёк срок и не кончился трафик, а ссылка скопирована целиком. В ссылке Reality должны быть pbk, sni и sid."
+  },
+  "helpSubTitle": {
+    "message": "Подписка."
+  },
+  "helpSub": {
+    "message": "Нужен обычный адрес подписки панели (список ссылок в base64), а не JSON-подписка. «Обновить» читает его заново; этот запрос идёт напрямую, не через VPN."
+  },
+  "helpLogTitle": {
+    "message": "Журнал."
+  },
+  "helpLog": {
+    "message": "Точная причина неудачного подключения — в журнале Xray:"
+  }
+}

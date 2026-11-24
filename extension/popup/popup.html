@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>XUI Browser Client</title>
+  <link rel="stylesheet" href="../lib/common.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="row">
+    <img src="../icons/icon-on.svg" width="22" height="22" alt="">
+    <strong>XUI</strong>
+    <span class="grow small muted" id="version"></span>
+    <label class="switch" data-i18n-title="popupToggleTitle">
+      <input type="checkbox" id="toggle">
+      <span class="slider"></span>
+    </label>
+  </header>
+
+  <section class="status" id="statusBox">
+    <div class="dot" id="dot"></div>
+    <div class="grow">
+      <div id="statusText"></div>
+      <div class="small muted" id="statusSub"></div>
+    </div>
+  </section>
+
+  <label class="field">
+    <span class="small muted" data-i18n="popupServer"></span>
+    <select id="profile"></select>
+  </label>
+
+  <label class="field">
+    <span class="small muted" data-i18n="popupScope"></span>
+    <select id="scope">
+      <option value="all" data-i18n="scopeAll"></option>
+      <option value="tabs" data-i18n="scopeTabs"></option>
+      <option value="private" data-i18n="scopePrivate"></option>
+    </select>
+  </label>
+
+  <section class="tabvpn" id="tabBox" hidden>
+    <div class="row">
+      <span class="grow" data-i18n="popupTabVpn"></span>
+      <label class="switch" data-i18n-title="popupTabVpn">
+        <input type="checkbox" id="tabToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="small muted" id="tabNote" hidden></div>
+  </section>
+
+  <div class="note small" id="scopeNote" hidden></div>
+
+  <label class="field">
+    <span class="small muted" data-i18n="popupMode"></span>
+    <select id="mode">
+      <option value="exclude" data-i18n="modeExclude"></option>
+      <option value="include" data-i18n="modeInclude"></option>
+    </select>
+  </label>
+
+  <section class="site" id="siteBox" hidden>
+    <div class="small muted" data-i18n="popupCurrentSite"></div>
+    <div class="row">
+      <span class="grow host" id="siteHost"></span>
+      <span class="pill" id="siteRoute"></span>
+    </div>
+    <button type="button" id="siteBtn"></button>
+  </section>
+
+  <section class="stats" id="stats" hidden>
+    <div><span class="muted small" data-i18n="statLatency"></span><br><span id="lat">—</span></div>
+    <div><span class="muted small" data-i18n="statChecked"></span><br><span id="chk">—</span></div>
+    <div><span class="muted small" data-i18n="statConnected"></span><br><span id="since">—</span></div>
+    <div><span class="muted small" data-i18n="statRx"></span><br><span id="rx">—</span></div>
+    <div><span class="muted small" data-i18n="statTx"></span><br><span id="tx">—</span></div>
+  </section>
+
+  <section class="ipbox" id="ipBox" hidden>
+    <div class="iprow" id="ipVpnRow">
+      <div class="small muted" data-i18n="ipWithVpn"></div>
+      <div class="row"><span class="grow ip" id="ipVpn"></span><span class="pill" id="ipVpnKind" hidden></span></div>
+      <div class="small muted" id="ipVpnSub" hidden></div>
+    </div>
+    <div class="iprow">
+      <div class="small muted" data-i18n="ipWithoutVpn"></div>
+      <div class="row"><span class="grow ip" id="ipDirect"></span><span class="pill" id="ipDirectKind" hidden></span></div>
+      <div class="small muted" id="ipDirectSub" hidden></div>
+    </div>
+    <div class="small" id="ipTab" hidden></div>
+    <button type="button" id="ipInfoBtn" class="link" data-i18n="ipInfoEnable" hidden></button>
+  </section>
+
+  <footer class="row">
+    <button type="button" id="ipBtn" data-i18n="popupCheckIp"></button>
+    <button type="button" id="statsBtn" data-i18n="popupStats" hidden></button>
+    <span class="grow"></span>
+    <button type="button" id="optBtn" data-i18n="popupSettings"></button>
+  </footer>
+
+  <script src="../lib/i18n.js"></script>
+  <script src="../lib/rules.js"></script>
+  <script src="../lib/scope.js"></script>
+  <script src="../lib/geo.js"></script>
+  <script src="../lib/api.js"></script>
+  <script src="../lib/toast.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

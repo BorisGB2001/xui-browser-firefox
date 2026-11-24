@@ -1,0 +1,55 @@
+/* Firefox cuts a popup taller than 600px (less on small screens): scroll instead of losing the buttons. */
+html { max-height: 600px; overflow-y: auto; scrollbar-width: thin; }
+body { width: 340px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+body > * { flex: none; }
+#ipTab.bad { color: var(--err); font-weight: 600; }
+header img { flex: none; }
+header strong { font-size: 16px; }
+
+.switch { position: relative; width: 46px; height: 26px; flex: none; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0; border-radius: 26px;
+  background: var(--line); transition: background .2s; cursor: pointer;
+}
+.slider::before {
+  content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px;
+  border-radius: 50%; background: #fff; transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.switch input:checked + .slider { background: var(--ok); }
+.switch input:checked + .slider::before { transform: translateX(20px); }
+.switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.status {
+  display: flex; gap: 10px; align-items: center;
+  background: var(--bg-soft); border-radius: var(--radius); padding: 10px 12px;
+}
+.status .small { word-break: break-word; }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: var(--muted); flex: none; }
+.dot.on { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 25%, transparent); }
+.dot.connecting { background: var(--warn); animation: pulse 1s infinite; }
+.dot.error { background: var(--err); }
+@keyframes pulse { 50% { opacity: .35; } }
+
+.field { display: flex; flex-direction: column; gap: 4px; }
+
+.site { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; }
+.host { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--bg-soft); color: var(--muted); white-space: nowrap; }
+.pill.vpn { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 13px; }
+footer { padding-top: 2px; }
+
+.tabvpn { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; }
+.tabvpn.on { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 8%, transparent); }
+.note { border-left: 3px solid var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); padding: 6px 10px; border-radius: 6px; }
+
+.ipbox { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; }
+.iprow { display: flex; flex-direction: column; gap: 2px; }
+.ip { font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; user-select: all; }
+.pill.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+button.link { background: none; border: 0; padding: 0; color: var(--accent); text-align: left; cursor: pointer; font-size: 12px; text-decoration: underline; }
+footer { gap: 8px; }
+footer button { white-space: nowrap; padding-left: 10px; padding-right: 10px; }
