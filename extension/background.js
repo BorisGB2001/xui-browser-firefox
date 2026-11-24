@@ -6,6 +6,10 @@
  * xray-core on this computer; Firefox reaches it as a local SOCKS5 proxy protected
  * by a random password (proxy.onRequest -> type "socks").
  *
+ * "Light" servers need no helper: an HTTP inbound with TLS is a plain HTTPS proxy
+ * (HTTP CONNECT over TLS, Basic auth) that Firefox talks to itself (type "https").
+ * They are kept in settings.localProfiles; the helper is asked only for the others.
+ *
  * Routing of a request = scope (all tabs / marked tabs + containers / private
  * windows, lib/scope.js) AND site lists (lib/rules.js).
  */
@@ -25,6 +29,7 @@ const DEFAULTS = {
   enabled: false,
   profileId: null,
   profiles: [], // cache of the helper's server list: [{id, name, protocol, endpoint, transport, sub, error}]
+  localProfiles: [], // servers that need no helper: [{id:"h-…", kind:"https", name, hostname, port, username, password}]
   port: 40810, // local SOCKS5 of xray
   infoPort: 40811, // xray stats API
   mode: "exclude", // site lists: "exclude" | "include"
@@ -55,6 +60,7 @@ const OFF = {
 };
 let rt = { ...OFF };
 let healthNonce = null; // marks our own health-check request
+let authFails = 0; // 407 answers of an HTTPS-proxy server in a row
 
 // Tabs marked "VPN in this tab". Kept in storage.session: survives a restart of the
 // background page, not of the browser (tab ids change then anyway).
@@ -103,7 +109,19 @@ async function native(cmd, args = {}) {
   return res;
 }
 
-const currentProfile = () => settings.profiles.find((p) => p.id === settings.profileId) || null;
+const isLocalId = (id) => typeof id === "string" && id.startsWith("h-");
+
+/** What the pages may see of a helper-less server: no password. */
+function publicLocal(p) {
+  return { id: p.id, kind: "https", local: true, name: p.name, protocol: "https", endpoint: p.hostname + ":" + p.port, hostname: p.hostname, port: p.port, username: p.username };
+}
+
+/** Every server for the pages and menus: helper-less ones first, then the helper's. */
+const allProfiles = () => [...settings.localProfiles.map(publicLocal), ...settings.profiles];
+
+/** The selected server: a full localProfiles entry (kind "https") or a helper profile. */
+const currentProfile = () =>
+  (isLocalId(settings.profileId) ? settings.localProfiles : settings.profiles).find((p) => p.id === settings.profileId) || null;
 
 const scopeCtx = () => ({
   scope: settings.scope,
@@ -330,6 +348,40 @@ async function applyWebRtc(on) {
 const DIRECT = { type: "direct" };
 const BLACKHOLE = { type: "http", host: "127.0.0.1", port: 9 }; // kill switch without a server
 
+function basicAuth(user, pass) {
+  const bytes = new TextEncoder().encode(user + ":" + pass);
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return "Basic " + btoa(bin);
+}
+
+// A short FNV-1a hash of the server settings: a changed address, login or password
+// must not ride on old proxy connections, and the password itself is not exposed.
+function isolationKey(p) {
+  const src = [p.id, p.hostname, p.port, p.username, p.password].join("\u0000");
+  let h = 0x811c9dc5;
+  for (let i = 0; i < src.length; i++) {
+    h ^= src.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return "xui-h-" + h.toString(36);
+}
+
+/** The proxy of the selected server: the HTTPS proxy itself, or the local xray listener. */
+function activeProxy() {
+  const p = currentProfile();
+  if (!p) return null;
+  if (p.kind !== "https") return tunnelProxy();
+  return {
+    type: "https",
+    host: p.hostname,
+    port: p.port,
+    proxyAuthorizationHeader: basicAuth(p.username, p.password),
+    failoverTimeout: 5,
+    connectionIsolationKey: isolationKey(p),
+  };
+}
+
 /**
  * The local xray SOCKS5 listener, or null while no tunnel is running.
  * Firefox reuses open proxy connections; the key changes with every start of the
@@ -461,7 +513,8 @@ async function wantsVpn(req, host) {
 
 async function routeRequest(details) {
   if (!settings.enabled) return DIRECT;
-  const proxy = currentProfile() ? tunnelProxy() : null;
+  const p = currentProfile();
+  const proxy = activeProxy();
   // Our own health probe always goes through the tunnel and never fails over.
   if (healthNonce && details.url.includes("xui-health=" + healthNonce)) return proxy || BLACKHOLE;
   // "Check IP": one request forced through the tunnel, one forced direct.
@@ -479,6 +532,8 @@ async function routeRequest(details) {
   } catch (_) {
     return DIRECT;
   }
+  // An HTTPS-proxy server itself is always reached directly.
+  if (p && p.kind === "https" && host === p.hostname) return DIRECT;
   const country = TTRules.needsCountry(host, settings) ? await countryOf(host) : null;
   if (!TTRules.route(host, settings, country)) return DIRECT;
   if (!proxy) return settings.killSwitch ? BLACKHOLE : DIRECT;
@@ -508,6 +563,24 @@ browser.proxy.onRequest.addListener(
 
 browser.proxy.onError.addListener((err) => console.warn("proxy error:", err && err.message));
 
+// An HTTPS-proxy server that ignores the preset header answers 407: reply to the challenge.
+browser.webRequest.onAuthRequired.addListener(
+  async (details) => {
+    await ready;
+    const p = currentProfile();
+    if (!details.isProxy || !settings.enabled || !p || p.kind !== "https") return {};
+    // Only our own server: a 407 from any other proxy is not ours to answer.
+    if (!details.challenger || details.challenger.host !== p.hostname) return {};
+    if (++authFails > 3) {
+      await setRuntime({ status: "error", error: t("errAuth407") });
+      return { cancel: true };
+    }
+    return { authCredentials: { username: p.username, password: p.password } };
+  },
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+);
+
 // ------------------------------------------------------------------ health check
 
 // Firefox's own error code for the last health request (fetch only says "NetworkError").
@@ -519,8 +592,22 @@ browser.webRequest.onErrorOccurred.addListener(
   { urls: [HEALTH_URL + "*"] }
 );
 
+const HTTPS_HINTS = [
+  [/UNKNOWN_ISSUER|SELF_SIGNED|UNTRUSTED_ISSUER|CA_CERT_INVALID|BAD_SIGNATURE|BAD_CERT_DOMAIN|EXPIRED/, "hintCert"],
+  [/PROXY_AUTHENTICATION_FAILED|407/, "errAuth407"],
+  [/UNKNOWN_PROXY_HOST|UNKNOWN_HOST/, "hintDns"],
+  [/CONNECTION_REFUSED/, "hintRefused"],
+  [/TIMEOUT|TIMED_OUT/, "errTimeout"],
+  [/NET_RESET|NET_INTERRUPT|SSL_ERROR|PARTIAL_TRANSFER/, "hintTlsReset"],
+];
+
 function explain(e, code) {
   if (e && e.name === "AbortError") return t("errTimeout");
+  const p = currentProfile();
+  if (p && p.kind === "https") {
+    const hit = code && HTTPS_HINTS.find(([re]) => re.test(code));
+    return t(hit ? hit[1] : "errHttpsDown") + (code ? " [" + code + "]" : "");
+  }
   // Nothing listens on the local port: xray has stopped.
   if (code && /PROXY_CONNECTION_REFUSED/.test(code)) return t("errSocks") + " [" + code + "]";
   // xray is running but could not carry the request to the server.
@@ -542,19 +629,35 @@ async function runHealthCheck({ quiet = false } = {}) {
     return;
   }
   if (!quiet && rt.status !== "on") await setRuntime({ status: "connecting", error: null });
-  // "start" is idempotent: a tunnel already running with the same settings is reused,
-  // a stopped one or one with another server is (re)started.
-  let tunnel;
-  try {
-    ({ state: tunnel } = await native("start", { id: p.id, port: settings.port, infoPort: settings.infoPort }));
-  } catch (e) {
-    if (settings.enabled) await setRuntime({ ...OFF, status: "error", error: e.message });
-    return;
+  let restarted;
+  if (p.kind === "https") {
+    // No helper involved. A tunnel left from another server is stopped (best effort).
+    if (rt.password) {
+      try {
+        await native("stop");
+      } catch (e) {
+        console.warn("stop:", e);
+      }
+      if (!settings.enabled) return;
+    }
+    const key = isolationKey(p);
+    restarted = key !== rt.key;
+    rt = { ...rt, key, port: null, username: null, password: null, metrics: null };
+  } else {
+    // "start" is idempotent: a tunnel already running with the same settings is reused,
+    // a stopped one or one with another server is (re)started.
+    let tunnel;
+    try {
+      ({ state: tunnel } = await native("start", { id: p.id, port: settings.port, infoPort: settings.infoPort }));
+    } catch (e) {
+      if (settings.enabled) await setRuntime({ ...OFF, status: "error", error: e.message });
+      return;
+    }
+    if (!settings.enabled) return; // switched off meanwhile: the queued stop follows
+    const key = "xui:" + tunnel.profile + ":" + tunnel.pid + ":" + tunnel.startedAt;
+    restarted = key !== rt.key;
+    rt = { ...rt, key, port: tunnel.port, username: tunnel.username, password: tunnel.password, metrics: tunnel.metrics || null };
   }
-  if (!settings.enabled) return; // switched off meanwhile: the queued stop follows
-  const key = "xui:" + tunnel.profile + ":" + tunnel.pid + ":" + tunnel.startedAt;
-  const restarted = key !== rt.key;
-  rt = { ...rt, key, port: tunnel.port, username: tunnel.username, password: tunnel.password, metrics: tunnel.metrics || null };
   if (restarted) dnsCache.clear();
   healthNonce = Math.random().toString(36).slice(2);
   healthErrorCode = null;
@@ -569,6 +672,7 @@ async function runHealthCheck({ quiet = false } = {}) {
     });
     if (r.status >= 500) throw new Error(t("errHealthHttp", r.status));
     if (!settings.enabled) return;
+    authFails = 0;
     await setRuntime({
       status: "on",
       error: null,
@@ -578,6 +682,7 @@ async function runHealthCheck({ quiet = false } = {}) {
     });
   } catch (e) {
     if (!settings.enabled) return;
+    if (rt.status === "error" && rt.error === t("errAuth407")) return; // keep the login/password message
     // onErrorOccurred may fire just after fetch rejects.
     if (!healthErrorCode) await new Promise((r) => setTimeout(r, 300));
     console.warn("health check failed:", healthErrorCode, e);
@@ -593,10 +698,13 @@ function stopTunnel() {
   healthQueue = healthQueue
     .then(async () => {
       if (settings.enabled) return; // turned on again meanwhile
-      try {
-        await native("stop");
-      } catch (e) {
-        console.warn("stop:", e);
+      // The helper is asked only when it may have a tunnel: light installs have none.
+      if (rt.password || settings.profiles.length) {
+        try {
+          await native("stop");
+        } catch (e) {
+          console.warn("stop:", e);
+        }
       }
       await setRuntime({ ...OFF });
     })
@@ -606,6 +714,7 @@ function stopTunnel() {
 
 async function setEnabled(value) {
   await saveSettings({ enabled: !!value });
+  authFails = 0;
   if (value) {
     browser.alarms.create(HEALTH_ALARM, { periodInMinutes: 0.5 });
     await applyWebRtc(true);
@@ -631,9 +740,10 @@ function rebuildMenus() {
       browser.menus.create({ id: "open-vpn-tab", title: t("menuOpenLinkVpn"), contexts: ["link"], visible: tabsScope });
       browser.menus.create({ id: "toggle-vpn", type: "checkbox", title: t("menuVpnOn"), contexts: ["action"], checked: settings.enabled });
       browser.menus.create({ id: "tab-vpn", type: "checkbox", title: t("menuTabVpn"), contexts: ["action"], visible: tabsScope });
-      if (settings.profiles.length) {
+      const servers = allProfiles();
+      if (servers.length) {
         browser.menus.create({ id: "servers", title: t("menuServer"), contexts: ["action"] });
-        for (const p of settings.profiles)
+        for (const p of servers)
           browser.menus.create({
             id: "srv:" + p.id,
             parentId: "servers",
@@ -712,28 +822,85 @@ browser.alarms.onAlarm.addListener(async (a) => {
 // ------------------------------------------------------------------ messages from popup/options
 
 async function getState() {
-  const { profiles, ...s } = settings;
+  const { profiles, localProfiles, ...s } = settings;
   return {
     settings: s,
-    profiles,
+    profiles: allProfiles(),
     runtime: { ...rt, username: undefined, password: undefined, key: undefined },
     vpnTabs: [...vpnTabs],
     version: browser.runtime.getManifest().version,
   };
 }
 
-/** Refresh the cached server list from the helper (the servers live on disk, not in the Firefox profile). */
+/** Refresh the cached server list from the helper (its servers live on disk, not in the Firefox profile). */
 async function syncProfiles() {
   const { profiles } = await native("list");
   const patch = { profiles };
-  if (settings.profileId && !profiles.some((p) => p.id === settings.profileId)) patch.profileId = null;
+  if (settings.profileId && !isLocalId(settings.profileId) && !profiles.some((p) => p.id === settings.profileId)) patch.profileId = null;
   await saveSettings(patch);
   rebuildMenus();
   return profiles;
 }
 
-/** Share links, a base64 list of them, or a subscription address (also used to refresh a subscription). */
+/** "https://user:password@host:port#Name" -> fields of an HTTPS-proxy server, or null for anything else. */
+function parseHttpsLink(text) {
+  text = String(text || "").trim();
+  if (/\s/.test(text) || !/^https:\/\/[^/@]+@/i.test(text)) return null;
+  let u;
+  try {
+    u = new URL(text);
+  } catch (_) {
+    return null;
+  }
+  let name = "";
+  try {
+    name = decodeURIComponent(u.hash.slice(1));
+  } catch (_) {}
+  return { name, hostname: u.hostname, port: Number(u.port) || 443, username: decodeURIComponent(u.username), password: decodeURIComponent(u.password) };
+}
+
+/** Add or change a server that needs no helper (an HTTPS proxy: HTTP inbound with TLS). */
+async function saveLocalServer({ profile }) {
+  const list = [...settings.localProfiles];
+  const idx = profile.id ? list.findIndex((x) => x.id === profile.id) : -1;
+  const old = idx >= 0 ? list[idx] : {};
+  const p = {
+    id: old.id || "h-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    kind: "https",
+    hostname: String(profile.hostname || "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/[/:].*$/, ""),
+    port: Number(profile.port) || 443,
+    username: String(profile.username || ""),
+    // An empty password field in the form means "keep the stored one".
+    password: profile.password ? String(profile.password) : old.password || "",
+  };
+  p.name = String(profile.name || "").trim().slice(0, 80) || p.hostname;
+  if (!p.hostname) throw new Error(t("errHostRequired"));
+  if (!p.username || !p.password) throw new Error(t("errCredsRequired"));
+  if (!Number.isInteger(p.port) || p.port < 1 || p.port > 65535) throw new Error(t("errPortRange"));
+  if (idx >= 0) list[idx] = p;
+  else list.push(p);
+  const patch = { localProfiles: list };
+  if (!settings.profileId) patch.profileId = p.id;
+  await saveSettings(patch);
+  rebuildMenus();
+  if (settings.enabled && settings.profileId === p.id) {
+    authFails = 0;
+    await healthCheck();
+  } else notifyPages();
+  return { profile: publicLocal(p) };
+}
+
+/**
+ * Share links, a base64 list of them, or a subscription address (also used to refresh a
+ * subscription) go to the helper; an "https://user:password@host" link is an HTTPS proxy
+ * and needs no helper.
+ */
 async function importServers({ name, text }) {
+  const https = parseHttpsLink(text);
+  if (https) {
+    const { profile } = await saveLocalServer({ profile: { ...https, name: name || https.name } });
+    return { added: [profile], errors: [], removed: [] };
+  }
   const before = currentProfile();
   const res = await native("import", { name, text });
   const profiles = await syncProfiles();
@@ -751,20 +918,31 @@ async function importServers({ name, text }) {
 
 async function deleteProfile({ id }) {
   const wasCurrent = settings.profileId === id;
-  await native("delete", { id }); // the helper stops the tunnel if it runs through this server
-  const profiles = await syncProfiles();
-  if (wasCurrent && profiles[0]) {
-    await saveSettings({ profileId: profiles[0].id });
-    rebuildMenus();
+  if (isLocalId(id)) await saveSettings({ localProfiles: settings.localProfiles.filter((p) => p.id !== id) });
+  else {
+    await native("delete", { id }); // the helper stops the tunnel if it runs through this server
+    await syncProfiles();
   }
+  if (wasCurrent) {
+    const next = allProfiles()[0];
+    await saveSettings({ profileId: next ? next.id : null });
+  }
+  rebuildMenus();
   if (settings.enabled) await (settings.profileId ? healthCheck() : setEnabled(false));
   else notifyPages();
   return {};
 }
 
 async function renameProfile({ id, name }) {
-  await native("rename", { id, name });
-  await syncProfiles();
+  if (isLocalId(id)) {
+    name = String(name || "").trim().slice(0, 80);
+    if (!name) throw new Error(t("errEmptyName"));
+    await saveSettings({ localProfiles: settings.localProfiles.map((p) => (p.id === id ? { ...p, name } : p)) });
+    rebuildMenus();
+  } else {
+    await native("rename", { id, name });
+    await syncProfiles();
+  }
   notifyPages();
   return {};
 }
@@ -891,7 +1069,7 @@ const handlers = {
       if (!ok) throw new Error(t("errStatsUrl"));
       clean.statsUrl = raw;
     }
-    if ("profileId" in clean && clean.profileId && !settings.profiles.some((p) => p.id === clean.profileId))
+    if ("profileId" in clean && clean.profileId && !allProfiles().some((p) => p.id === clean.profileId))
       throw new Error(t("errNoSuchServer"));
     for (const k of ["port", "infoPort"]) {
       if (!(k in clean)) continue;
@@ -908,6 +1086,7 @@ const handlers = {
     updateBadge();
     if (changedServer || "geoDns" in clean || "geoDnsUrl" in clean) dnsCache.clear(); // another vantage point or resolver
     if (changedServer && settings.enabled) {
+      authFails = 0;
       await setRuntime({ status: "connecting", error: null, since: null });
       await healthCheck();
     } else notifyPages();
@@ -921,6 +1100,7 @@ const handlers = {
     await syncProfiles();
     return getState();
   },
+  saveLocalServer,
   importServers,
   deleteProfile,
   renameProfile,

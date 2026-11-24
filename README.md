@@ -18,6 +18,15 @@ A browser cannot speak Xray protocols itself, so there are two parts:
 
 Only browser traffic goes through the VPN; the rest of the system is untouched.
 
+### Light mode (no helper, nothing to install but the add-on)
+
+A 3x-ui inbound of the **HTTP** kind with **TLS** is a plain HTTPS proxy (HTTP CONNECT over TLS with a
+username and password), which Firefox can use by itself. Add it in the settings under “Add an HTTPS proxy
+server” (or paste `https://user:password@host:port`). The server needs a domain with a trusted certificate
+and ALPN `http/1.1`. Such a server does **not** work through the Cloudflare proxy (Cloudflare does not pass
+CONNECT); for a CDN use VLESS over XHTTP / WebSocket + TLS, which needs the helper. If a server needs the
+helper and it is missing, the add-on says so and tells how to install it.
+
 ## Features
 
 - Import `vless://`, `vmess://`, `trojan://`, `ss://` links (one or many) and

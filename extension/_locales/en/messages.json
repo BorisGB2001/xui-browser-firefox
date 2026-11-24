@@ -168,7 +168,7 @@
     "message": "Could not check the IP: $1"
   },
   "optIntro": {
-    "message": "Browser-only VPN for servers of a 3x-ui panel. A small helper on this computer runs xray-core; Firefox reaches it as a local SOCKS5 proxy."
+    "message": "Browser-only VPN for servers of a 3x-ui panel. HTTPS-proxy servers work right away; for VLESS, VMess, Trojan and Shadowsocks a small helper on this computer runs xray-core."
   },
   "optServers": {
     "message": "Servers"
@@ -177,7 +177,7 @@
     "message": "Add server"
   },
   "optKeyLabel": {
-    "message": "Server links (vless://, vmess://, trojan://, ss://), one per line — or a subscription address (https://…)"
+    "message": "Server links (vless://, vmess://, trojan://, ss://), one per line — or a subscription address (https://…). These need the helper."
   },
   "optKeyPlaceholder": {
     "message": "vless://uuid@host:443?type=tcp&security=reality&pbk=…&sni=…&sid=…#Name\n\nor\n\nhttps://panel.example.com:2096/sub/…"
@@ -549,7 +549,7 @@
     "message": "The tunnel is running, but the server does not answer. Check that the server is reachable and the link is still valid; the exact reason is in the Xray log (Settings)."
   },
   "errNoHelper": {
-    "message": "No connection to the helper on this computer. Install it (Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh) and restart Firefox. ($1)"
+    "message": "This server needs the helper with xray-core on this computer, and it is not installed (or Firefox was not restarted after installing). Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh. Servers of the “HTTPS proxy” kind work without it. ($1)"
   },
   "errHelperUnknown": {
     "message": "Unknown helper error."
@@ -608,9 +608,6 @@
   "helperOk": {
     "message": "✓ Helper connected"
   },
-  "helperMissing": {
-    "message": "✗ Helper not found"
-  },
   "helperMeta": {
     "message": "helper $1 · $2 · data: $3"
   },
@@ -618,7 +615,7 @@
     "message": "xray-core NOT found"
   },
   "helperHint": {
-    "message": "Install the helper (Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh) and restart Firefox."
+    "message": "VLESS, VMess, Trojan and Shadowsocks links (including XHTTP / WebSocket through a CDN such as Cloudflare) need the helper with xray-core. Install it without administrator rights — Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh — and restart Firefox."
   },
   "toastHelperOk": {
     "message": "The helper responds"
@@ -654,7 +651,7 @@
     "message": "Helper."
   },
   "helpHelper": {
-    "message": "A browser cannot speak VLESS, VMess, Trojan or Shadowsocks itself: the add-on needs the helper (xui_host) and xray-core on this computer — see the “Helper” card at the top."
+    "message": "A browser cannot speak VLESS, VMess, Trojan or Shadowsocks itself: such servers need the helper (xui_host) and xray-core on this computer — see the “Helper” card at the top. HTTPS-proxy servers need nothing."
   },
   "helpServerTitle": {
     "message": "Server."
@@ -673,5 +670,80 @@
   },
   "helpLog": {
     "message": "The exact reason of a failed connection is in the Xray log:"
+  },
+  "helperLight": {
+    "message": "Light mode: the helper is not installed. Servers of the “HTTPS proxy” kind work as is."
+  },
+  "optAddHttps": {
+    "message": "Add an HTTPS proxy server (no helper needed)"
+  },
+  "optHttpsHint": {
+    "message": "For an inbound of the HTTP kind with TLS in 3x-ui (HTTP CONNECT over TLS with a username and password). Firefox connects to it by itself. The server needs a domain name with a trusted certificate (e.g. Let's Encrypt) and ALPN http/1.1. It does not work through the Cloudflare proxy: Cloudflare does not pass CONNECT. You can also paste https://user:password@host:port into “Add server”."
+  },
+  "optHttpsStorage": {
+    "message": "The username and password of such a server are stored in this Firefox profile (storage.local), not encrypted."
+  },
+  "fHost": {
+    "message": "Server domain"
+  },
+  "fPort": {
+    "message": "Port"
+  },
+  "fUser": {
+    "message": "Username"
+  },
+  "fPass": {
+    "message": "Password"
+  },
+  "optPassHint": {
+    "message": "Leave the password empty to keep the saved one."
+  },
+  "optCancel": {
+    "message": "Cancel"
+  },
+  "optSaveServer": {
+    "message": "Save server"
+  },
+  "optEditServer": {
+    "message": "Edit server “$1”"
+  },
+  "btnEdit": {
+    "message": "Edit"
+  },
+  "metaUser": {
+    "message": "user $1"
+  },
+  "metaNoHelper": {
+    "message": "no helper needed"
+  },
+  "errHostRequired": {
+    "message": "Enter the server domain."
+  },
+  "errCredsRequired": {
+    "message": "Enter the username and password."
+  },
+  "errPortRange": {
+    "message": "Port must be a number 1–65535."
+  },
+  "errEmptyName": {
+    "message": "Empty name."
+  },
+  "errAuth407": {
+    "message": "The server rejected the username/password (407)."
+  },
+  "errHttpsDown": {
+    "message": "Could not connect to the HTTPS proxy server. Check the address and port, the certificate, the username/password and that the inbound is enabled."
+  },
+  "hintCert": {
+    "message": "Firefox does not trust the server certificate: it must be issued by a public authority (e.g. Let's Encrypt) for this exact domain and not be expired."
+  },
+  "hintDns": {
+    "message": "Cannot resolve the server name (DNS). Check the domain."
+  },
+  "hintRefused": {
+    "message": "The server refused the connection: the port is closed or the inbound is off."
+  },
+  "hintTlsReset": {
+    "message": "The connection to the server was reset. The network may block it, the inbound may have no TLS, or it offers HTTP/2 (set ALPN to http/1.1)."
   }
 }

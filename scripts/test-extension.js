@@ -15,7 +15,7 @@ const ok = (name) => (passed++, console.log("ok  ", name));
 
 function makeWorld(stored = {}, servers = [{ id: "nl", name: "NL", protocol: "vless", endpoint: "203.0.113.7:443" }]) {
   const calls = []; // helper commands, in order
-  const host = { running: null, failStart: null, gate: null, serverDown: false, servers: [...servers], pid: 100, importAdds: [] };
+  const host = { running: null, failStart: null, gate: null, serverDown: false, servers: [...servers], pid: 100, importAdds: [], missing: false };
   const local = { profiles: [...servers], ...stored };
   const session = {};
   const privacy = {};
@@ -37,6 +37,7 @@ function makeWorld(stored = {}, servers = [{ id: "nl", name: "NL", protocol: "vl
       id: "x",
       sendNativeMessage: async (_name, msg) => {
         calls.push(msg.cmd);
+        if (host.missing) throw new Error("No such native application xui_browser");
         if (host.gate && msg.cmd === host.gate.cmd) await host.gate.promise;
         const state = () => ({ running: true, ...host.running, username: "xui", password: "pw", startedAt: 100, metrics: { rx: 10, tx: 5 } });
         switch (msg.cmd) {
@@ -77,7 +78,7 @@ function makeWorld(stored = {}, servers = [{ id: "nl", name: "NL", protocol: "vl
       onAlarm: ev("alarm"),
     },
     proxy: { onRequest: ev("proxy"), onError: ev("proxyError") },
-    webRequest: { onErrorOccurred: ev("reqError") },
+    webRequest: { onErrorOccurred: ev("reqError"), onAuthRequired: ev("auth") },
     tabs: {
       query: async () => [],
       get: async (id) => ({ id }),
@@ -97,13 +98,14 @@ function makeWorld(stored = {}, servers = [{ id: "nl", name: "NL", protocol: "vl
     // The health probe must be routed into the tunnel; it fails when the server is down.
     const route = await listeners.proxy({ url, tabId: -1 });
     if (url.includes("generate_204")) {
-      if (route.type !== "socks" || host.serverDown || !host.running) throw new TypeError("NetworkError");
+      const up = route.type === "https" ? !host.serverDown : route.type === "socks" && !host.serverDown && host.running;
+      if (!up) throw new TypeError("NetworkError");
       return { status: 204, ok: true };
     }
-    return { ok: true, status: 200, json: async () => ({ ip: route.type === "socks" ? "198.51.100.1" : "192.0.2.1" }) };
+    return { ok: true, status: 200, json: async () => ({ ip: route.type === "direct" ? "192.0.2.1" : "198.51.100.1" }) };
   };
   const ctx = vm.createContext({
-    browser, URL, setTimeout, clearTimeout, AbortController, fetch, performance, TextEncoder,
+    browser, URL, setTimeout, clearTimeout, AbortController, fetch, performance, TextEncoder, btoa,
     console: { warn() {}, error() {}, log() {} },
   });
   for (const f of ["lib/i18n.js", "lib/rules.js", "lib/scope.js", "lib/geo.js", "lib/doh.js", "background.js"])
@@ -247,6 +249,61 @@ const flush = () => new Promise((r) => setTimeout(r, 5));
     const ip = await w.send({ type: "checkIp", tab: { tabId: 8 }, host: "example.com" });
     assert.deepStrictEqual([ip.vpn.ip, ip.direct.ip, ip.tabVia], ["198.51.100.1", "192.0.2.1", "direct"]);
     ok("tabs scope: only the marked tab uses the tunnel; Check IP shows both addresses");
+  }
+
+  // --- light mode: no helper at all, an HTTPS-proxy server
+  {
+    const w = makeWorld({}, []);
+    w.host.missing = true;
+    await assert.rejects(w.send({ type: "importServers", text: "vless://id@h:443", name: "" }), /errNoHelper/);
+    await assert.rejects(w.send({ type: "saveLocalServer", profile: { hostname: "vpn.example.com", username: "u" } }), /errCredsRequired/);
+    const { profile } = await w.send({ type: "saveLocalServer", profile: { name: "", hostname: "https://VPN.example.com/x", port: 8443, username: "u", password: "p:w" } });
+    assert.deepStrictEqual([profile.name, profile.endpoint, profile.password, profile.local], ["vpn.example.com", "vpn.example.com:8443", undefined, true]);
+    w.calls.length = 0;
+    let st = await w.send({ type: "setEnabled", value: true });
+    assert.strictEqual(st.runtime.status, "on");
+    assert.deepStrictEqual(w.calls, [], "the helper is never asked in light mode");
+    assert(!JSON.stringify(st).includes("p:w"), "the password must not reach the pages");
+    const r = await w.proxy("https://example.com/");
+    assert.deepStrictEqual([r.type, r.host, r.port, r.proxyAuthorizationHeader], ["https", "vpn.example.com", 8443, "Basic " + btoa("u:p:w")]);
+    assert.strictEqual((await w.proxy("https://vpn.example.com:8443/")).type, "direct", "the server itself is reached directly");
+    const own = { isProxy: true, challenger: { host: "vpn.example.com" } };
+    // (objects come from another realm: compare as JSON)
+    assert.strictEqual(JSON.stringify(await w.listeners.auth({ isProxy: true, challenger: { host: "other.example" } })), "{}");
+    assert.strictEqual(JSON.stringify((await w.listeners.auth(own)).authCredentials), '{"username":"u","password":"p:w"}');
+    await w.listeners.auth(own);
+    await w.listeners.auth(own);
+    assert.strictEqual((await w.listeners.auth(own)).cancel, true, "wrong password: stop answering after 3 tries");
+    assert.strictEqual((await w.send({ type: "getState" })).runtime.error, "errAuth407");
+    // editing with an empty password keeps the stored one; the key changes with the port
+    await w.send({ type: "saveLocalServer", profile: { id: profile.id, name: "My", hostname: "vpn.example.com", port: 443, username: "u", password: "" } });
+    const r2 = await w.proxy("https://example.com/");
+    assert.deepStrictEqual([r2.port, r2.proxyAuthorizationHeader], [443, r.proxyAuthorizationHeader]);
+    assert.notStrictEqual(r2.connectionIsolationKey, r.connectionIsolationKey);
+    await w.send({ type: "setEnabled", value: false });
+    assert.deepStrictEqual(w.calls, []);
+    await w.send({ type: "deleteProfile", id: profile.id });
+    st = await w.send({ type: "getState" });
+    assert.deepStrictEqual([st.profiles.length, st.settings.profileId], [0, null]);
+    ok("light mode: HTTPS proxy works without the helper; xray links ask to install it");
+  }
+
+  // --- both kinds: switching to an HTTPS proxy stops xray, the link form adds a server
+  {
+    const w = makeWorld({ profileId: "nl" });
+    await w.send({ type: "setEnabled", value: true });
+    assert(w.host.running);
+    const res = await w.send({ type: "importServers", text: "https://bob:s%40cret@px.example.com:2053#Light", name: "" });
+    assert.deepStrictEqual([res.added[0].name, res.added[0].endpoint], ["Light", "px.example.com:2053"]);
+    assert.strictEqual((await w.send({ type: "getState" })).settings.profileId, "nl", "the selected server stays");
+    await w.send({ type: "setSettings", patch: { profileId: res.added[0].id } });
+    assert.strictEqual(w.host.running, null, "xray is stopped when an HTTPS-proxy server takes over");
+    const r = await w.proxy("https://example.com/");
+    assert.deepStrictEqual([r.type, r.proxyAuthorizationHeader], ["https", "Basic " + btoa("bob:s@cret")]);
+    await w.send({ type: "setSettings", patch: { profileId: "nl" } });
+    assert.strictEqual((await w.proxy("https://example.com/")).type, "socks");
+    assert.strictEqual((await w.send({ type: "getState" })).profiles.length, 2);
+    ok("both kinds side by side: switching between an HTTPS proxy and xray");
   }
 
   console.log(`\n${passed} tests passed`);

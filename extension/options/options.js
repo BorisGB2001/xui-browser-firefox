@@ -25,7 +25,8 @@ async function ping() {
     );
     if (!r.xray) box.append(el("div", "err-text small", t("helperHint")));
   } else {
-    box.append(el("div", "err-text", t("helperMissing")), el("div", "muted small", t("helperHint")));
+    // Not an error: servers of the "HTTPS proxy" kind work without the helper.
+    box.append(el("div", "", t("helperLight")), el("div", "muted small", t("helperHint")));
   }
   return !!r;
 }
@@ -80,13 +81,17 @@ function renderProfiles() {
     const info = el("div");
     const name = el("div", "name", p.name);
     if (p.protocol) name.append(el("span", "badge", p.protocol.toUpperCase()));
-    const meta = p.error ? [t("metaError", p.error)] : [p.endpoint, p.transport, p.sub ? t("metaSub", subLabel(p.sub)) : ""];
+    const meta = p.error
+      ? [t("metaError", p.error)]
+      : p.local
+        ? [p.endpoint, t("metaUser", p.username), t("metaNoHelper")]
+        : [p.endpoint, p.transport, p.sub ? t("metaSub", subLabel(p.sub)) : ""];
     info.append(name, el("div", "meta", meta.filter(Boolean).join(" · ")));
 
     const btns = el("div", "btns");
-    const ren = el("button", "", t("btnRename"));
+    const ren = el("button", "", t(p.local ? "btnEdit" : "btnRename"));
     ren.type = "button";
-    ren.addEventListener("click", () => renameProfile(p));
+    ren.addEventListener("click", () => (p.local ? editHttps(p) : renameProfile(p)));
     const del = el("button", "danger", t("btnDelete"));
     del.type = "button";
     del.addEventListener("click", () => deleteProfile(p));
@@ -198,6 +203,59 @@ $("importBtn").addEventListener("click", async () => {
     $("impText").value = "";
     $("fName").value = "";
     $("editBox").open = false;
+  }
+});
+
+// ------------------------------------------------------------------ HTTPS proxy (no helper)
+
+let httpsEditId = null;
+
+function resetHttps() {
+  httpsEditId = null;
+  for (const id of ["hName", "hHost", "hUser", "hPass"]) $(id).value = "";
+  $("hPort").value = 443;
+  $("httpsTitle").textContent = t("optAddHttps");
+  $("hCancel").hidden = $("hPassHint").hidden = true;
+}
+
+function editHttps(p) {
+  resetHttps();
+  httpsEditId = p.id;
+  $("hName").value = p.name;
+  $("hHost").value = p.hostname;
+  $("hPort").value = p.port;
+  $("hUser").value = p.username;
+  $("httpsTitle").textContent = t("optEditServer", p.name);
+  $("hCancel").hidden = $("hPassHint").hidden = false;
+  $("httpsBox").open = true;
+  $("httpsBox").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+$("hCancel").addEventListener("click", resetHttps);
+
+$("hSave").addEventListener("click", async () => {
+  const profile = {
+    id: httpsEditId || undefined,
+    name: $("hName").value.trim(),
+    hostname: $("hHost").value.trim(),
+    port: Number($("hPort").value),
+    username: $("hUser").value,
+    password: $("hPass").value,
+  };
+  $("hSave").disabled = true;
+  try {
+    const res = await api("saveLocalServer", { profile });
+    state = await api("getState");
+    renderProfiles();
+    resetHttps();
+    $("httpsBox").open = false;
+    if (state.settings.enabled && state.settings.profileId === res.profile.id && state.runtime.status === "error")
+      Toast.error(state.runtime.error);
+    else Toast.ok(t("toastImportedOne", res.profile.name));
+  } catch (e) {
+    Toast.error(e.message);
+  } finally {
+    $("hSave").disabled = false;
   }
 });
 

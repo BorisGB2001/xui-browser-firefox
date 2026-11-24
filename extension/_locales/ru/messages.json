@@ -168,7 +168,7 @@
     "message": "Не удалось проверить IP: $1"
   },
   "optIntro": {
-    "message": "VPN только для браузера для серверов панели 3x-ui. Небольшой помощник на этом компьютере запускает xray-core; Firefox ходит через него как через локальный SOCKS5-прокси."
+    "message": "VPN только для браузера для серверов панели 3x-ui. Серверы «HTTPS-прокси» работают сразу; для VLESS, VMess, Trojan и Shadowsocks небольшой помощник на этом компьютере запускает xray-core."
   },
   "optServers": {
     "message": "Серверы"
@@ -177,7 +177,7 @@
     "message": "Добавить сервер"
   },
   "optKeyLabel": {
-    "message": "Ссылки серверов (vless://, vmess://, trojan://, ss://), по одной в строке — или адрес подписки (https://…)"
+    "message": "Ссылки серверов (vless://, vmess://, trojan://, ss://), по одной в строке — или адрес подписки (https://…). Для них нужен помощник."
   },
   "optKeyPlaceholder": {
     "message": "vless://uuid@host:443?type=tcp&security=reality&pbk=…&sni=…&sid=…#Название\n\nили\n\nhttps://panel.example.com:2096/sub/…"
@@ -549,7 +549,7 @@
     "message": "Туннель запущен, но сервер не отвечает. Проверьте, что сервер доступен и ссылка ещё действует; точная причина — в журнале Xray (Настройки)."
   },
   "errNoHelper": {
-    "message": "Нет связи с помощником на этом компьютере. Установите его (Windows: install.cmd из архива; macOS/Linux: scripts/install.sh) и перезапустите Firefox. ($1)"
+    "message": "Этому серверу нужен помощник с xray-core на компьютере, а он не установлен (или Firefox не перезапущен после установки). Windows: install.cmd из архива; macOS/Linux: scripts/install.sh. Серверы типа «HTTPS-прокси» работают без него. ($1)"
   },
   "errHelperUnknown": {
     "message": "Неизвестная ошибка помощника."
@@ -608,9 +608,6 @@
   "helperOk": {
     "message": "✓ Помощник подключён"
   },
-  "helperMissing": {
-    "message": "✗ Помощник не найден"
-  },
   "helperMeta": {
     "message": "помощник $1 · $2 · данные: $3"
   },
@@ -618,7 +615,7 @@
     "message": "xray-core НЕ найден"
   },
   "helperHint": {
-    "message": "Установите помощник (Windows: install.cmd из архива; macOS/Linux: scripts/install.sh) и перезапустите Firefox."
+    "message": "Ссылкам VLESS, VMess, Trojan и Shadowsocks (в том числе XHTTP / WebSocket через CDN вроде Cloudflare) нужен помощник с xray-core. Он ставится без прав администратора — Windows: install.cmd из архива; macOS/Linux: scripts/install.sh — после этого перезапустите Firefox."
   },
   "toastHelperOk": {
     "message": "Помощник отвечает"
@@ -654,7 +651,7 @@
     "message": "Помощник."
   },
   "helpHelper": {
-    "message": "Браузер сам не умеет VLESS, VMess, Trojan и Shadowsocks: расширению нужны помощник (xui_host) и xray-core на этом компьютере — см. карточку «Помощник» вверху."
+    "message": "Браузер сам не умеет VLESS, VMess, Trojan и Shadowsocks: таким серверам нужны помощник (xui_host) и xray-core на этом компьютере — см. карточку «Помощник» вверху. Серверам «HTTPS-прокси» не нужно ничего."
   },
   "helpServerTitle": {
     "message": "Сервер."
@@ -673,5 +670,80 @@
   },
   "helpLog": {
     "message": "Точная причина неудачного подключения — в журнале Xray:"
+  },
+  "helperLight": {
+    "message": "Лёгкий режим: помощник не установлен. Серверы типа «HTTPS-прокси» работают и так."
+  },
+  "optAddHttps": {
+    "message": "Добавить сервер «HTTPS-прокси» (помощник не нужен)"
+  },
+  "optHttpsHint": {
+    "message": "Для inbound типа HTTP с TLS в 3x-ui (HTTP CONNECT поверх TLS с логином и паролем). Firefox подключается к нему сам. Серверу нужны доменное имя с доверенным сертификатом (например, Let's Encrypt) и ALPN http/1.1. Через прокси Cloudflare не работает: Cloudflare не пропускает CONNECT. Можно также вставить https://логин:пароль@хост:порт в «Добавить сервер»."
+  },
+  "optHttpsStorage": {
+    "message": "Логин и пароль такого сервера хранятся в профиле Firefox (storage.local), без шифрования."
+  },
+  "fHost": {
+    "message": "Домен сервера"
+  },
+  "fPort": {
+    "message": "Порт"
+  },
+  "fUser": {
+    "message": "Логин"
+  },
+  "fPass": {
+    "message": "Пароль"
+  },
+  "optPassHint": {
+    "message": "Пустое поле пароля — оставить сохранённый пароль."
+  },
+  "optCancel": {
+    "message": "Отмена"
+  },
+  "optSaveServer": {
+    "message": "Сохранить сервер"
+  },
+  "optEditServer": {
+    "message": "Изменить сервер «$1»"
+  },
+  "btnEdit": {
+    "message": "Изменить"
+  },
+  "metaUser": {
+    "message": "логин $1"
+  },
+  "metaNoHelper": {
+    "message": "без помощника"
+  },
+  "errHostRequired": {
+    "message": "Укажите домен сервера."
+  },
+  "errCredsRequired": {
+    "message": "Укажите логин и пароль."
+  },
+  "errPortRange": {
+    "message": "Порт должен быть числом 1–65535."
+  },
+  "errEmptyName": {
+    "message": "Пустое название."
+  },
+  "errAuth407": {
+    "message": "Сервер отклонил логин/пароль (407)."
+  },
+  "errHttpsDown": {
+    "message": "Не удалось подключиться к серверу «HTTPS-прокси». Проверьте адрес и порт, сертификат, логин/пароль и что inbound включён."
+  },
+  "hintCert": {
+    "message": "Firefox не доверяет сертификату сервера: он должен быть выдан публичным центром (например, Let's Encrypt) именно на этот домен и не быть просроченным."
+  },
+  "hintDns": {
+    "message": "Не удаётся найти сервер по имени (DNS). Проверьте домен."
+  },
+  "hintRefused": {
+    "message": "Сервер отклонил подключение: порт закрыт или inbound выключен."
+  },
+  "hintTlsReset": {
+    "message": "Соединение с сервером оборвано. Возможно, его блокирует сеть, у inbound нет TLS или он предлагает HTTP/2 (оставьте в ALPN только http/1.1)."
   }
 }

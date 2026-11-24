@@ -48,6 +48,27 @@
         </div>
       </div>
     </details>
+
+    <details id="httpsBox">
+      <summary id="httpsTitle" data-i18n="optAddHttps"></summary>
+      <div class="import">
+        <div class="muted small" data-i18n="optHttpsHint"></div>
+        <div class="grid">
+          <label><span data-i18n="fName"></span> <input type="text" id="hName" data-i18n-placeholder="fNamePlaceholder"></label>
+          <span></span>
+          <label><span data-i18n="fHost"></span> <input type="text" id="hHost" placeholder="vpn.example.com" spellcheck="false"></label>
+          <label><span data-i18n="fPort"></span> <input type="number" id="hPort" min="1" max="65535" value="443"></label>
+          <label><span data-i18n="fUser"></span> <input type="text" id="hUser" autocomplete="off" spellcheck="false"></label>
+          <label><span data-i18n="fPass"></span> <input type="password" id="hPass" autocomplete="new-password"></label>
+        </div>
+        <div class="muted small" id="hPassHint" hidden data-i18n="optPassHint"></div>
+        <div class="row">
+          <span class="grow muted small" data-i18n="optHttpsStorage"></span>
+          <button type="button" id="hCancel" hidden data-i18n="optCancel"></button>
+          <button type="button" class="primary" id="hSave" data-i18n="optSaveServer"></button>
+        </div>
+      </div>
+    </details>
   </section>
 
   <section class="card">
