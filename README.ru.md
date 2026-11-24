@@ -42,7 +42,12 @@ VPN-клиент только для браузера для серверов п
 
 Удаление помощника: `./scripts/uninstall.sh` (`--purge` удаляет и сохранённые серверы).
 
-Windows: помощник собирается (`GOOS=windows go build`), установщика пока нет.
+## Установка (Windows)
+
+Архив собирает `./scripts/build-windows.sh` (на macOS/Linux, нужен Go) → `dist/xui-browser-client-<версия>-windows.zip`.
+На Windows распакуйте его и запустите `install.cmd` (права администратора не нужны): он копирует помощник, скачивает
+официальный релиз `xray-core` с GitHub со сверкой SHA-256 и регистрирует помощник в Firefox. Затем установите `.xpi`.
+Обычный Firefox ставит только подписанный `.xpi` (`scripts/sign.sh`); неподписанный загружается временно через `about:debugging`.
 
 ## Данные
 

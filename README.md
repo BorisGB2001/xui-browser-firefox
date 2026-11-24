@@ -44,7 +44,12 @@ and turn the VPN on in the toolbar popup.
 
 Remove the helper: `./scripts/uninstall.sh` (`--purge` also deletes the stored servers).
 
-Windows: the helper builds for Windows (`GOOS=windows go build`), but there is no installer yet.
+## Install (Windows)
+
+Build the archive with `./scripts/build-windows.sh` (on macOS/Linux, needs Go) → `dist/xui-browser-client-<version>-windows.zip`.
+On Windows unpack it and run `install.cmd` (no administrator rights): it copies the helper, downloads the official
+`xray-core` release from GitHub with a SHA-256 check and registers the helper in Firefox. Then install the `.xpi`.
+Release Firefox only installs a signed `.xpi` (`scripts/sign.sh`); an unsigned one loads temporarily via `about:debugging`.
 
 ## Data
 

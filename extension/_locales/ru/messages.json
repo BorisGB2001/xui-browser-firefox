@@ -549,7 +549,7 @@
     "message": "Туннель запущен, но сервер не отвечает. Проверьте, что сервер доступен и ссылка ещё действует; точная причина — в журнале Xray (Настройки)."
   },
   "errNoHelper": {
-    "message": "Нет связи с помощником на этом компьютере. Установите его (scripts/install.sh, macOS и Linux) и перезапустите Firefox. ($1)"
+    "message": "Нет связи с помощником на этом компьютере. Установите его (Windows: install.cmd из архива; macOS/Linux: scripts/install.sh) и перезапустите Firefox. ($1)"
   },
   "errHelperUnknown": {
     "message": "Неизвестная ошибка помощника."
@@ -618,7 +618,7 @@
     "message": "xray-core НЕ найден"
   },
   "helperHint": {
-    "message": "Установите помощник (scripts/install.sh, macOS и Linux) и перезапустите Firefox."
+    "message": "Установите помощник (Windows: install.cmd из архива; macOS/Linux: scripts/install.sh) и перезапустите Firefox."
   },
   "toastHelperOk": {
     "message": "Помощник отвечает"

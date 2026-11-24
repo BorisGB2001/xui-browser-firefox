@@ -549,7 +549,7 @@
     "message": "The tunnel is running, but the server does not answer. Check that the server is reachable and the link is still valid; the exact reason is in the Xray log (Settings)."
   },
   "errNoHelper": {
-    "message": "No connection to the helper on this computer. Install it (scripts/install.sh, macOS and Linux) and restart Firefox. ($1)"
+    "message": "No connection to the helper on this computer. Install it (Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh) and restart Firefox. ($1)"
   },
   "errHelperUnknown": {
     "message": "Unknown helper error."
@@ -618,7 +618,7 @@
     "message": "xray-core NOT found"
   },
   "helperHint": {
-    "message": "Install the helper (scripts/install.sh, macOS and Linux) and restart Firefox."
+    "message": "Install the helper (Windows: install.cmd from the archive; macOS/Linux: scripts/install.sh) and restart Firefox."
   },
   "toastHelperOk": {
     "message": "The helper responds"
